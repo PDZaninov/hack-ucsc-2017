@@ -1,4 +1,11 @@
 {{extend 'layout.html'}}
+
+<script>
+    var get_posts_url = "{{=URL('api', 'get_posts')}}}";
+    var add_post_url;
+    var del_post_url;
+</script>
+
 <style>
     body {
         background-image: url("../static/images/background.jpg");
@@ -98,14 +105,14 @@
         });
         var marker = new google.maps.Marker({
             position: center,
-            map: map,
+            map: map
         });
 
         // set callback to auto-refocus center upon resizing window
         window.onresize = function () {
             google.maps.event.trigger(map, 'resize');
             map.setCenter(center);
-        }
+        };
 
         $('#post_list').on('selected_loc', function (evt) {
             marker.setVisible(false);
@@ -115,7 +122,7 @@
                 map.setZoom(17);
             marker.setPosition(center);
             marker.setVisible(true);
-        })
+        });
         $('#post_list').on('deselected_loc', function () {
             if (map.zoom > 15)
                 map.setZoom(15);
@@ -128,6 +135,7 @@
 <script>
     $(document).ready(function () {
         $("#main_content").show();
+        main_content.getPosts();
     });
 </script>
 

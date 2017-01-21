@@ -6,7 +6,7 @@ function extend(a, b) {
     for (var i = 0; i < b.length; i++) {
         a.push(b[i]);
     }
-}
+};
 
 var main_content = new Vue({
         el: "#main_content",
@@ -19,14 +19,14 @@ var main_content = new Vue({
                     desc: 'desc',
                     loc: {lat: 36.9741, lng: -122.0308},
                     time: 'time',
-                    img: '',
+                    img: ''
                 },
                 {
                     name: 'asdf',
                     desc: 'desc',
                     loc: {lat: 36.9585966, lng: -122.060937},
                     time: 'time',
-                    img: '',
+                    img: ''
                 }
             ],
             sel_post: -1,
@@ -34,19 +34,16 @@ var main_content = new Vue({
             is_loading: false,
             new_post: {
                 name: '',
-                desc: '',
-
+                desc: ''
             }
         },
         methods: {
             // get all posts TODO API
             getPosts: function () {
-                $.post(get_posts_url,
-                    {}, function (data) {
-                        main_content.posts = [];
-                        extend(main_content.posts, data.posts);
-                    }
-                );
+                $.getJSON(get_posts_url, function(data) {
+                    main_content.posts = [];
+                    extend(main_content.posts, data.posts);
+                });
             },
 
             // create a new post TODO API
@@ -66,7 +63,7 @@ var main_content = new Vue({
                         loc: {lat: pos.coords.latitude, lng: pos.coords.longitude},
                         time: '...',
                         img: ''
-                    }
+                    };
                     main_content.posts.push(n);
                     main_content.toggleLoading();
 
@@ -116,5 +113,4 @@ var main_content = new Vue({
                 this.sel_post = -1;
             }
         }
-    })
-    ;
+});
