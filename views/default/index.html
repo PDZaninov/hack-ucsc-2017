@@ -1,4 +1,8 @@
 {{extend 'layout.html'}}
+{{logged_in = auth.user_id is not None}}
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
 
 <style>
 
@@ -91,6 +95,12 @@
     border-radius: 8px;
     }
 
+    #openmes{
+        text-align: center;
+        font-size: 35px;
+        text-shadow: 2px 2px 10px black;
+    }
+
 </style>
 
 <div id="banner">
@@ -101,7 +111,7 @@
         </strong>
     </p>
 </div>
-
+{{if not logged_in:}}
 <div id="login">
 
   <a class="btn btn-primary btn-xlg" href="{{=URL('default', 'user', args='login')}}" > Google Login
@@ -110,7 +120,11 @@
   </a>
 
 </div>
-
+{{else:}}
+        <div id="openmes">
+            Thank You For Joining Us
+        </div>
+{{pass}}
 
 <div id="body">
     <br>
