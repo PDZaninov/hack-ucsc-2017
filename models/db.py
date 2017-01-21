@@ -178,3 +178,5 @@ class googleAccount(OAuthAccount):
 
 
 auth.settings.login_form = googleAccount()
+
+auth.settings.actions_disabled = ['request_reset_password', 'register', 'delimiter']
