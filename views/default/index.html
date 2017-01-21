@@ -32,6 +32,16 @@
         width: 20%;
 
     }
+    #headers{
+        text-align: center;
+        background-image: url("https://s-media-cache-ak0.pinimg.com/originals/ed/86/bf/ed86bfc3323f8e197b264305d6ebb80e.jpg");
+        border-radius: 50px 50px 50px;
+        font-size: 150%;
+        color: white;
+        text-shadow: 2px 2px 10px Black;
+        width:50%;
+    }
+
     body {
       background-image: url("../static/images/background.jpg");
       background-color: rgba(255,255,255,0.7);
@@ -52,17 +62,7 @@
 
 <div id="headerl">
   <header1 background-position center></header1>
-  <form action = "mainview">
-    <strong>
-    Username<br>
-    <input type = "text" username="input1"><br>
-    Password<br>
-    <input type = "text" password="input2"><br>
-    <input type="submit" value="Log In">
-    </strong>
-  </form>
 
-  <p>-- OR --</p>
 
   <a class="btn btn-primary" href="{{=URL('default', 'user', args='login')}}">
      <i class="fa fa-google" aria-hidden="true"></i>&nbsp; Google Login
@@ -74,3 +74,14 @@
 </div>
 
 <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+
+<div id="headers">
+  <div id="title">This is World+</div>
+      <p>
+        Connect with your community on World+. Help bring awareness to problems in the environment around you by uploading pictures of litter and more.
+      </p>
+</div>
+
+
+
