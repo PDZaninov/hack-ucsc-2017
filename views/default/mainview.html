@@ -2,7 +2,7 @@
 
 <script>
     var get_posts_url = "{{=URL('api', 'get_posts')}}}";
-    var add_post_url;
+    var add_post_url = "{{=URL('api', 'add_post')}}";
     var del_post_url;
 </script>
 
@@ -68,7 +68,7 @@
 
             <div v-for="(post, idx) in posts" id="post_list" v-if="!show_comments">
                 <div class="post-content text-left">
-                    <img v-bind="post.img" alt="post img"
+                    <img v-bind:src="post.img" alt="post img"
                          v-on:click="selectPost(idx)"/>
                     <div>name: ${post.name}</div>
                     <div>author: ${post.author}</div>
