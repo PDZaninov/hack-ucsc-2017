@@ -13,10 +13,16 @@ var main_content = new Vue({
     delimiters: ['${', '}'],
     unsafeDelimiters: ['!{', '}'],
     data: {
-        posts: [],
+        posts: [
+            {
+                name: 'name',
+                desc: 'desc',
+                img: '',
+            }
+        ],
         sel_post: -1,
         is_create_post: false,
-        new_post_data: {
+        new_post: {
             name: '',
             desc: '',
 
@@ -32,16 +38,26 @@ var main_content = new Vue({
                 }
             );
         },
+        // create a new post TODO API
+        createPost: function () {
+            var np = this.new_post;
+            this.posts.push({name: np.name, desc: np.desc});
+            this.resetAll();
+        },
         // select post if new idx
         // otherwise deselect post
         selectPost: function (idx) {
-            if (sel_post != idx)
+            if (this.sel_post != idx)
                 this.sel_post = idx;
             else
                 this.sel_post = -1;
         },
         toggleCreatePost: function () {
             this.is_create_post = !this.is_create_post;
+        },
+        resetAll: function () {
+            this.is_create_post = false;
+            this.sel_post = -1;
         }
     }
 });
