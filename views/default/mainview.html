@@ -68,7 +68,7 @@
 
             <div v-for="(post, idx) in posts" id="post_list">
                 <div class="post-content text-left">
-                    <img v-bind="post.img" alt="post img"
+                    <img v-bind:src="post.img" alt="post img"
                          v-on:click="selectPost(idx)"
                     />
                     <span>name: ${post.name}</span>
