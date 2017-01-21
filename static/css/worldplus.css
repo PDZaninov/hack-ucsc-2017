@@ -6,9 +6,6 @@
     opacity: 0;
 }
 
-.fade-move {
-    transition: 0.5s;
-}
 
 .quickfade-enter-active, .quickfade-leave-active {
     transition: all 0.2s;
@@ -18,10 +15,20 @@
     opacity: 0;
 }
 
+.move-enter-active, .mode-leave-active{
+    transition: all 0.3s;
+}
+
+.move-move {
+    transition: 0.3s;
+}
+
 .post-list {
+    overflow-y: scroll;
     height: 100%;
     border: 1px solid black;
     border-radius: 10px;
+
 }
 
 .post-content {
@@ -38,12 +45,12 @@
 }
 
 .post-hr {
-    margin:0;
+    margin: 0;
     border-color: lightgray;
 }
 
 .post-desc {
-    margin:7px;
+    margin: 7px;
 }
 
 div#map {

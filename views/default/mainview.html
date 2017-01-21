@@ -32,7 +32,7 @@
 
             <!-- show post form or post list -->
             <transition name="quickfade" mode="out-in">
-                <div v-if="is_create_post" key="post-state-1">
+                <div v-if="is_create_post">
                     <div>
                         <div class="post-content">
                             <div><input type="text" v-model="new_post.name"/></div>
@@ -51,33 +51,32 @@
                         </div>
                     </div>
                 </div>
-                <div v-else key="post-state-2">
-
-                    <div v-for="(post, idx) in posts" id="post_list">
-                        <div class="post-content text-left">
-                            <img v-bind="post.img" alt="post img"
-                                 v-on:click="selectPost(idx)"
-                            />
-                            <span>name: ${post.name}</span>
-                            <transition name="fade">
-                                <div v-if="sel_post == idx">
-                                    <hr class="post-hr">
-                                    <div class="post-desc">desc: ${post.desc}</div>
-                                    <div>location: {${post.loc.lat}, ${post.loc.lng}}</div>
-                                    <div>time: ${post.time}</div>
-                                </div>
-                            </transition>
-                        </div>
-                    </div>
-                </div>
             </transition>
 
+            <div v-for="(post, idx) in posts" id="post_list">
+                <div class="post-content text-left">
+                    <img v-bind="post.img" alt="post img"
+                         v-on:click="selectPost(idx)"
+                    />
+                    <span>name: ${post.name}</span>
+                    <transition name="fade">
+                        <div v-if="sel_post == idx">
+                            <hr class="post-hr">
+                            <div class="post-desc">desc: ${post.desc}</div>
+                            <div>location: {${post.loc.lat}, ${post.loc.lng}}</div>
+                            <div>time: ${post.time}</div>
+                        </div>
+                    </transition>
+                </div>
+            </div>
         </div>
+
     </div>
+</div>
 </div>
 
 <script>
-    var map;
+
     function initMap() {
         var center = {lat: 36.9916520946924, lng: -122.061012402344};
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -95,14 +94,19 @@
             map.setCenter(center);
         }
 
-        $('#post_list').on('selected_location', function (evt) {
+        $('#post_list').on('selected_loc', function (evt) {
             marker.setVisible(false);
             center = evt.location;
             map.setCenter(center);
-            map.setZoom(17);
+            if (map.zoom < 17)
+                map.setZoom(17);
             marker.setPosition(center);
             marker.setVisible(true);
         })
+        $('#post_list').on('deselected_loc', function () {
+            if (map.zoom > 15)
+                map.setZoom(15);
+        });
     }
 </script>
 <script async defer
