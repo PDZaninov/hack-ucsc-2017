@@ -1,6 +1,12 @@
 {{extend 'layout.html'}}
-
-
+<style>
+    body {
+      background-image: url("../static/images/background.jpg");
+      background-color: rgba(255,255,255,0.7);
+      background-blend-mode:lighten;
+      color:black;
+    }
+</style>
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 <link rel="stylesheet" href="{{=URL('static','css/worldplus.css')}}"/>
 
@@ -119,3 +125,7 @@
 </script>
 
 <script src="{{=URL('static','js/default_index.js')}}"></script>
+
+<div id="body">
+    <br>
+</div>
