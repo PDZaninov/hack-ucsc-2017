@@ -22,11 +22,11 @@
         margin-left: auto;
         margin-right: auto;
         text-align: center;
-        border-radius: 50px 50px 50px;
         color: white;
         text-shadow: 2px 2px 10px Black;
+        width: 20%;
     }
-    #headers{
+    #description{
         text-align: center;
         background-image: url("https://s-media-cache-ak0.pinimg.com/originals/ed/86/bf/ed86bfc3323f8e197b264305d6ebb80e.jpg");
         border-radius: 50px 50px 50px;
@@ -37,7 +37,33 @@
         height: 145px;
     }
 
-    #headerd{
+    #maplink{
+        display: block;
+        margin-left: auto;
+        margin-right: 0%;
+        margin-top: -145px;
+        background-image: url("https://s-media-cache-ak0.pinimg.com/originals/ed/86/bf/ed86bfc3323f8e197b264305d6ebb80e.jpg");
+        text-align: center;
+        border-radius: 50px 50px 50px;
+        font-size: 150%;
+        color: white;
+        text-shadow: 2px 2px 10px Black;
+        width: 50%;
+        height: 145px;
+    }
+    #aboutus{
+        text-align: center;
+        background-image: url("https://s-media-cache-ak0.pinimg.com/originals/ed/86/bf/ed86bfc3323f8e197b264305d6ebb80e.jpg");
+        background-attachment: fixed;
+        background-position: center bottom;
+        border-radius: 50px 50px 50px;
+        font-size: 150%;
+        color: white;
+        text-shadow: 2px 2px 10px Black;
+        width:50%;
+        height: 145px;
+    }
+    #profilelink{
         display: block;
         margin-left: auto;
         margin-right: 0%;
@@ -57,6 +83,14 @@
       background-blend-mode:lighten;
       color:black;
     }
+    .btn-xlg {
+    padding: 18px 28px;
+    font-size: 20px;
+    line-height: normal;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    }
 
 </style>
 
@@ -71,7 +105,7 @@
 
 <div id="login">
 
-  <a class="btn btn-primary btn-lg" href="{{=URL('default', 'user', args='login')}}" > Google Login
+  <a class="btn btn-primary btn-xlg" href="{{=URL('default', 'user', args='login')}}" > Google Login
 
      <i class="fa fa-google" aria-hidden="true"></i>&nbsp;
   </a>
@@ -86,15 +120,25 @@
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 
 
-<div id="headers">
+<div id="description">
   <div id="title">This is World+</div>
       <p>
         Connect with your community on World+. Help bring awareness to problems in the environment around you by uploading pictures of litter and more.
       </p>
 </div>
 
-<div id="headerd">
+<div id="maplink">
   <br>
     <div id="title"><a href="http://127.0.0.1:8000/hack/default/mainview">Click here for map</a></div>
 </div>
 
+<div id="description">
+  <p>
+    Some sort of description about the team. Maybe saying this was made for hackathon.
+  </p>
+</div>
+
+<div id="maplink">
+  <br>
+    <div id="title"><a href="http://127.0.0.1:8000/hack/default/profile">Click here for profile</a></div>
+</div>
