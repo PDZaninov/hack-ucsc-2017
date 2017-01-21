@@ -1,0 +1,50 @@
+{{extend 'layout.html'}}
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+<link rel="stylesheet" href="{{=URL('static','css/worldplus.css')}}"/>
+
+<div id="main_content">
+    <!--map div-->
+    <div id="map" class="col-xs-0 col-sm-6 col-md-7">
+        <h3 class="col-sm-12 post-overlay text-center">Santa Cruz</h3>
+    </div>
+
+    <!--posts div-->
+    <div class="text-center col-xs-0 col-sm-6 col-md-5">
+        <div v-if="is_create_post" class="post-list">
+            <button class="btn" v-on:click="toggleCreatePost">
+                Cancel Post
+            </button>
+            <div>
+                <div class="post-content">
+                    <div><input type="text" v-model="new_post_data.name"/></div>
+                    <div>
+                        <button class="btn">Upload a Photo</button>
+                    </div>
+                    <div><textarea v-model="new_post_data.desc"></textarea></div>
+                    <!-- figure out how to upload a photo -->
+                </div>
+            </div>
+        </div>
+
+        <div v-else class="post-list">
+            <button class="btn" v-on:click="toggleCreatePost">
+                Create Post
+            </button>
+            <ul v-for="(post, idx) in posts" class="">
+                <li>
+                    <div class="post-content">
+                        ${post.name}
+                        <img src="${post.img_name}" alt="post img"
+                             v-on:click="selectPost(idx)"
+                        />
+                        ${post.desc}
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+
+<script src="{{=URL('static','js/default_index.js')}}"></script>

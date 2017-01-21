@@ -1,0 +1,18 @@
+.post-list {
+    height: 100%;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.post-content {
+
+}
+
+.post-overlay {
+    position: absolute;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.fixed-pos {
+    position: fixed;
+}
