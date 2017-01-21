@@ -7,3 +7,4 @@ uploads/*
 .sass-cache
 .sass-cache/*
 progress.log
+.idea/*
