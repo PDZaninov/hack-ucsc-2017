@@ -1,4 +1,7 @@
 {{extend 'layout.html'}}
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
 
 <style>
 
@@ -46,6 +49,7 @@
         </strong>
     </p>
 </div>
+
 <div id="headerl">
   <header1 background-position center></header1>
   <form action = "mainview">
@@ -57,7 +61,16 @@
     <input type="submit" value="Log In">
     </strong>
   </form>
+
+  <p>-- OR --</p>
+
+  <a class="btn btn-primary" href="{{=URL('default', 'user', args='login')}}">
+     <i class="fa fa-google" aria-hidden="true"></i>&nbsp; Google Login
+  </a>
+
 </div>
 <div id="body">
     <br>
 </div>
+
+<script src="https://apis.google.com/js/platform.js" async defer></script>
