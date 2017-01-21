@@ -31,6 +31,7 @@ var main_content = new Vue({
             ],
             sel_post: -1,
             is_create_post: false,
+            is_loading: false,
             new_post: {
                 name: '',
                 desc: '',
@@ -40,30 +41,53 @@ var main_content = new Vue({
         methods: {
             // get all posts TODO API
             getPosts: function () {
-                $.posts(get_classes_url,
+                $.post(get_posts_url,
                     {}, function (data) {
                         main_content.posts = [];
                         extend(main_content.posts, data.posts);
                     }
                 );
             },
+
             // create a new post TODO API
+            //implement loading for geolocation and api call
             createPost: function () {
                 var n = this.new_post;
                 var np = {
                     name: n.name, desc: n.desc
                 };
+
+                // geolocation loading...
+                this.toggleLoading();
                 navigator.geolocation.getCurrentPosition(function (pos) {
-                    main_content.posts.push({
+                    n = {
                         name: np.name,
                         desc: np.desc,
                         loc: {lat: pos.coords.latitude, lng: pos.coords.longitude},
-                        time: 'time',
-                        img: '',
-                    });
+                        time: '...',
+                        img: ''
+                    }
+                    main_content.posts.push(n);
+                    main_content.toggleLoading();
+
+                    // api call loading...
+                    main_content.toggleLoading();
+                    $.post(create_post_url,
+                        {post: n},
+                        function (data) {
+                            posts[posts.length - 1].time = data.time;
+                            main_content.toggleLoading();
+                        });
                 });
+
                 this.resetAll();
             },
+
+            // mark a post as complete. delete it. TODO API
+            markPostComplete: function () {
+
+            },
+
             // select post if new idx
             // otherwise deselect post
             selectPost: function (idx) {
@@ -78,8 +102,12 @@ var main_content = new Vue({
                     $('#post_list').trigger(evt);
                 }
             },
+
             toggleCreatePost: function () {
                 this.is_create_post = !this.is_create_post;
+            },
+            toggleLoading: function () {
+                this.is_loading = !this.is_loading;
             },
             resetAll: function () {
                 this.is_create_post = false;

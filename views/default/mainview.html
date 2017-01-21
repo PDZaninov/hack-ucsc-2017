@@ -1,10 +1,10 @@
 {{extend 'layout.html'}}
 <style>
     body {
-      background-image: url("../static/images/background.jpg");
-      background-color: rgba(255,255,255,0.7);
-      background-blend-mode:lighten;
-      color:black;
+        background-image: url("../static/images/background.jpg");
+        background-color: rgba(255, 255, 255, 0.7);
+        background-blend-mode: lighten;
+        color: black;
     }
 </style>
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
@@ -75,8 +75,15 @@
                     </transition>
                 </div>
             </div>
-        </div>
 
+            <transition name="move">
+                <div v-if="is_loading">
+                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </transition>
+        </div>
+:
     </div>
 </div>
 </div>

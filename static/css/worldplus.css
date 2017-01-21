@@ -28,7 +28,7 @@
     height: 100%;
     border: 1px solid black;
     border-radius: 10px;
-
+    background-color: rgba(245,245,225,0.5)
 }
 
 .post-content {
@@ -36,6 +36,7 @@
     border-radius: 10px;
     padding: 7px;
     margin: 3px;
+    background-color: rgba(245, 245, 225, 0.45)
 }
 
 .map-overlay {
@@ -66,7 +67,7 @@ html {
 }
 
 body {
-    height: 80%;
+    height: 90%;
 }
 
 body div.main-container.container-fluid {
