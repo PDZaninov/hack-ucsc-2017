@@ -1,5 +1,5 @@
 {{extend 'layout.html'}}
-
+{{logged_in = auth.user_id is not None}}
 <style>
     hr{
         border: 0;
@@ -14,7 +14,7 @@
     }
 
 </style>
-
+{{if logged_in:}}
 <div id="proheader" class="col-xs-0 col-sm-6 col-md-7">
     <h2>Hi {{=T(auth.user.first_name if auth.user.first_name else '')}}</h2>
     <h4>Here you can see your accumulated points and customize your experience.</h4>
@@ -24,6 +24,9 @@
 <div id="recpoint" class="text-center col-xs-0 col-sm-6 col-md-5">
     Points:
 </div>
+{{else:}}
+<p>Please Log In</p>
+{{pass}}
 
 
 
