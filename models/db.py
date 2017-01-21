@@ -152,7 +152,9 @@ class googleAccount(OAuthAccount):
                               client_secret=self.client_secret,
                               auth_url=self.AUTH_URL,
                               token_url=self.TOKEN_URL,
-                              approval_prompt='auto', state='auth_provider=google',
+                              access_type='online',
+                              approval_prompt='auto',
+                              state='auth_provider=google',
                               scope='https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email')
 
     def get_user(self):

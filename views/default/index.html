@@ -1,4 +1,7 @@
 {{extend 'layout.html'}}
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
 
 <style>
 
@@ -8,27 +11,39 @@
 
     #header{
         text-align: center;
-        background-image: url("https://lh3.ggpht.com/LG8aIactDutHBEf8KU1l7WmiZbBHnDyzBj9RxwU8DBibFM-N8FvyDSk9xMBdbWOkxQQ=h900");
+        background-image: url("http://cdn.wonderfulengineering.com/wp-content/uploads/2014/09/Green-Wallpaper-11.jpg");
         border-radius: 50px 124px 64px;
         font-size: 150%;
-        color:black;
+        color: white;
+        text-shadow: 2px 2px 10px Black;
     }
     #headerl{
         display: block;
         margin-left: auto;
         margin-right: auto;
-        background-color:darkgrey;
+        background-color:forestgreen;
         text-align: center;
         background-attachment: fixed;
         background-position: center;
         border-radius: 50px 50px 50px;
         font-size: 150%;
-        color:black;
+        color: white;
+        text-shadow: 2px 2px 10px Black;
         width: 20%;
 
     }
+    #headers{
+        text-align: center;
+        background-image: url("https://s-media-cache-ak0.pinimg.com/originals/ed/86/bf/ed86bfc3323f8e197b264305d6ebb80e.jpg");
+        border-radius: 50px 50px 50px;
+        font-size: 150%;
+        color: white;
+        text-shadow: 2px 2px 10px Black;
+        width:50%;
+    }
+
     body {
-      background-image: url("https://s-media-cache-ak0.pinimg.com/originals/99/91/eb/9991ebe57eb7bc172143765e28a55b5d.jpg");
+      background-image: url("../static/images/background.jpg");
       background-color: rgba(255,255,255,0.7);
       background-blend-mode:lighten;
       color:black;
@@ -44,18 +59,29 @@
         </strong>
     </p>
 </div>
+
 <div id="headerl">
   <header1 background-position center></header1>
-  <form action = "action_page.php">
-    <strong>
-    Username<br>
-    <input type = "text" username="input1"><br>
-    Password<br>
-    <input type = "text" password="input2"><br>
-    <input type="submit" value="Log In">
-    </strong>
-  </form>
+
+
+  <a class="btn btn-primary" href="{{=URL('default', 'user', args='login')}}">
+     <i class="fa fa-google" aria-hidden="true"></i>&nbsp; Google Login
+  </a>
+
 </div>
 <div id="body">
     <br>
 </div>
+
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+
+<div id="headers">
+  <div id="title">This is World+</div>
+      <p>
+        Connect with your community on World+. Help bring awareness to problems in the environment around you by uploading pictures of litter and more.
+      </p>
+</div>
+
+
+

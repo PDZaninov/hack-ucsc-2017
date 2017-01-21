@@ -22,6 +22,9 @@ def index():
 def mainview():
     return dict(message=T('Hi'))
 
+def profile():
+    return dict()
+
 
 def user():
     """

@@ -79,17 +79,16 @@
 <script>
     var map;
     function initMap() {
-        var uluru = {lat: -25.363, lng: 131.044};
-        map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 4,
-            center: uluru
+        var center = {lat: 36.9916520946924, lng: -122.061012402344};
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 12,
+            center: center
         });
         var marker = new google.maps.Marker({
-            position: uluru,
-            map: map
+            position: center,
+            map: map,
         });
 
-        var center = marker.getPosition();
         // set callback to auto-refocus center upon resizing window
         window.onresize = function () {
             google.maps.event.trigger(map, 'resize');
