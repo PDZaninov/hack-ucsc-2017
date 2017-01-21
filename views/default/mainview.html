@@ -1,22 +1,17 @@
 {{extend 'layout.html'}}
-<style>
- #map {
-    height: 200px;
-    background-color: grey;
- }
-</style>
+
 
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 <link rel="stylesheet" href="{{=URL('static','css/worldplus.css')}}"/>
 
-<div id="main_content">
+<div id="main_content" class="fullheight">
     <!--map div-->
     <div id="map" class="col-xs-0 col-sm-6 col-md-7">
         <h3 class="col-sm-12 post-overlay text-center">Santa Cruz</h3>
     </div>
 
     <!--posts div-->
-    <div class="text-center col-xs-0 col-sm-6 col-md-5">
+    <div class="text-center col-xs-0 col-sm-6 col-md-5 fullheight">
         <div v-if="is_create_post" class="post-list">
             <button class="btn" v-on:click="toggleCreatePost">
                 Cancel Post
@@ -54,20 +49,27 @@
 </div>
 
 <script>
-  function initMap() {
-    var uluru = {lat: -25.363, lng: 131.044};
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 4,
-      center: uluru
-    });
-    var marker = new google.maps.Marker({
-      position: uluru,
-      map: map
-    });
-  }
+    function initMap() {
+        var uluru = {lat: -25.363, lng: 131.044};
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 4,
+            center: uluru
+        });
+        var marker = new google.maps.Marker({
+            position: uluru,
+            map: map
+        });
+        
+        var center = marker.getPosition();
+        // set callback to auto-refocus center upon resizing window
+        window.onresize = function () {
+            google.maps.event.trigger(map, 'resize');
+            map.setCenter(center);
+        }
+    }
 </script>
 <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5WLmkuj2OHkGa6p23cqLJfWQGSVwevl8&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5WLmkuj2OHkGa6p23cqLJfWQGSVwevl8&callback=initMap">
 </script>
 
 <script src="{{=URL('static','js/default_index.js')}}"></script>
