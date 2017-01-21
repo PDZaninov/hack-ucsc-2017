@@ -1,1 +1,21 @@
 {{extend 'layout.html'}}
+
+<style>
+    hr{
+        border: 0;
+        height: 5px;
+        background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+    }
+</style>
+
+<div id="proheader" class="col-xs-0 col-sm-6 col-md-7">
+    <h2>Hi {{=T(auth.user.first_name if auth.user.first_name else '')}}</h2>
+    <h4>Here you can see your accumulated points and customize your experience.</h4>
+    <hr>
+</div>
+
+<div id="recpoint" class="text-center col-xs-0 col-sm-6 col-md-5">
+    Points:
+</div>
+
+

@@ -5,8 +5,8 @@
 # Customize your APP title, subtitle and menus here
 # ----------------------------------------------------------------------------------------------------------------------
 
-response.logo = A(B('World+ ',
-                  I(_class="fa fa-globe")),
+response.logo = A(B(I(_class="fa fa-globe"), ' World+ ',
+                  ),
                   _class="navbar-brand", _href=URL("default", "index"),
                   _id="web2py-logo")
 response.title = request.application.replace('_', ' ').title()
