@@ -13,6 +13,14 @@ db.define_table('post',
                 Field('created_on', 'datetime', default=datetime.datetime.utcnow())
                 )
 
+db.define_table('feedback',
+                Field('recv_id', 'reference auth_user'),
+                Field('user_id', 'reference auth_user'),
+                Field('post_id', 'reference post'),
+                Field('retort', 'string'),
+                Field('created_on', 'datetime', default=datetime.datetime.utcnow())
+                )
+
 db.post.user_id.readable = db.post.user_id.writable = False
 db.post.lat.readable = db.post.lat.writable = False
 db.post.lng.readable = db.post.lat.writable = False

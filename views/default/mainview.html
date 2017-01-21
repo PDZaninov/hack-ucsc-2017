@@ -59,80 +59,109 @@
                 </div>
             </transition>
 
-            <div v-for="(post, idx) in posts" id="post_list">
+            <div v-for="(post, idx) in posts" id="post_list" v-if="!show_comments">
                 <div class="post-content text-left">
                     <img v-bind="post.img" alt="post img"
-                         v-on:click="selectPost(idx)"
-                    />
-                    <span>name: ${post.name}</span>
+                         v-on:click="selectPost(idx)"/>
+                    <div>name: ${post.name}</div>
+                    <div>author: ${post.author}</div>
                     <transition name="fade">
                         <div v-if="sel_post == idx">
                             <hr class="post-hr">
                             <div class="post-desc">desc: ${post.desc}</div>
                             <div>location: {${post.loc.lat}, ${post.loc.lng}}</div>
                             <div>time: ${post.time}</div>
+                            <div>points: ${post.points}</div>
+                            <transition name="fade">
+                                <div v-if="!show_comments" v-on:click="getComments">
+                                    <button class="btn">show comments</button>
+                                </div>
+                            </transition>
+                        </div>
+                    </transition>
+
+                    <transition name="quickfade">
+                        <div v-if="uploading">
+                            <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                            <span class="sr-only">Loading...</span>
                         </div>
                     </transition>
                 </div>
             </div>
 
-            <transition name="move">
-                <div v-if="is_loading">
-                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-                    <span class="sr-only">Loading...</span>
+            <div v-if="show_comments">
+                <div>
+                    <button class="btn" v-on:click="toggleComments">hide comments</button>
                 </div>
-            </transition>
+                <transition>
+                    <div class="post-content text-left">
+                        <img v-bind:src="post.img" alt="post img"
+                             v-on:click="selectPost(idx)"/>
+                        <div>name: ${post.name}</div>
+                        <div>author: ${post.author}</div>
+                        <hr class="post-hr">
+                        <div class="post-desc">desc: ${post.desc}</div>
+                        <div>location: {${post.loc.lat}, ${post.loc.lng}}</div>
+                        <div>time: ${post.time}</div>
+
+                        <div v-for="(comment, idx) in posts.comments">
+                            <div class="post-content">
+                                ${comment.content}
+                            </div>
+                            <div v-if="no_comments && posts[idx].comments.length">no comments</div>
+                        </div>
+                    </div>
+                </transition>
+            </div>
+
         </div>
-:
     </div>
-</div>
-</div>
 
-<script>
+    <script>
 
-    function initMap() {
-        var center = {lat: 36.9916520946924, lng: -122.061012402344};
-        var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 12,
-            center: center
-        });
-        var marker = new google.maps.Marker({
-            position: center,
-            map: map,
-        });
+        function initMap() {
+            var center = {lat: 36.9916520946924, lng: -122.061012402344};
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12,
+                center: center
+            });
+            var marker = new google.maps.Marker({
+                position: center,
+                map: map,
+            });
 
-        // set callback to auto-refocus center upon resizing window
-        window.onresize = function () {
-            google.maps.event.trigger(map, 'resize');
-            map.setCenter(center);
+            // set callback to auto-refocus center upon resizing window
+            window.onresize = function () {
+                google.maps.event.trigger(map, 'resize');
+                map.setCenter(center);
+            }
+
+            $('#post_list').on('selected_loc', function (evt) {
+                marker.setVisible(false);
+                center = evt.location;
+                map.setCenter(center);
+                if (map.zoom < 17)
+                    map.setZoom(17);
+                marker.setPosition(center);
+                marker.setVisible(true);
+            })
+            $('#post_list').on('deselected_loc', function () {
+                if (map.zoom > 15)
+                    map.setZoom(15);
+            });
         }
-
-        $('#post_list').on('selected_loc', function (evt) {
-            marker.setVisible(false);
-            center = evt.location;
-            map.setCenter(center);
-            if (map.zoom < 17)
-                map.setZoom(17);
-            marker.setPosition(center);
-            marker.setVisible(true);
-        })
-        $('#post_list').on('deselected_loc', function () {
-            if (map.zoom > 15)
-                map.setZoom(15);
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5WLmkuj2OHkGa6p23cqLJfWQGSVwevl8&callback=initMap">
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#main_content").show();
         });
-    }
-</script>
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5WLmkuj2OHkGa6p23cqLJfWQGSVwevl8&callback=initMap">
-</script>
-<script>
-    $(document).ready(function () {
-        $("#main_content").show();
-    });
-</script>
+    </script>
 
-<script src="{{=URL('static','js/default_index.js')}}"></script>
+    <script src="{{=URL('static','js/default_index.js')}}"></script>
 
-<div id="body">
-    <br>
-</div>
+    <div id="body">
+        <br>
+    </div>

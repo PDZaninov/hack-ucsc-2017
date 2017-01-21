@@ -16,26 +16,36 @@ var main_content = new Vue({
             posts: [
                 {
                     name: 'name',
+                    author: 'guy',
                     desc: 'desc',
                     loc: {lat: 36.9741, lng: -122.0308},
                     time: 'time',
+                    point: 12,
                     img: '',
+                    comments: [],
+                    id: 1,
                 },
                 {
                     name: 'asdf',
+                    author: 'guy2',
                     desc: 'desc',
                     loc: {lat: 36.9585966, lng: -122.060937},
                     time: 'time',
+                    point: 14,
                     img: '',
+                    comments: [],
+                    id: 2,
                 }
             ],
             sel_post: -1,
+            show_comments: false,
             is_create_post: false,
-            is_loading: false,
+            uploading: 0,
+            loading_comments: 0,
+            no_comments: false,
             new_post: {
                 name: '',
                 desc: '',
-
             }
         },
         methods: {
@@ -49,6 +59,20 @@ var main_content = new Vue({
                 );
             },
 
+            // get all comments for this post TODO API
+            getComments: function (idx) {
+                this.toggleComments()
+                this.resetLoadingComments();
+                this.incLoadingComments();
+                $.post(get_comments_url,
+                    {id: this.posts[idx].id},
+                    function (data) {
+                        extend(main_content.posts[idx].comments, data.comments);
+                        main_content.incLoadingComments();
+                    }
+                );
+            },
+
             // create a new post TODO API
             //implement loading for geolocation and api call
             createPost: function () {
@@ -57,8 +81,9 @@ var main_content = new Vue({
                     name: n.name, desc: n.desc
                 };
 
+                this.resetUploading();
                 // geolocation loading...
-                this.toggleLoading();
+                this.incUploading();
                 navigator.geolocation.getCurrentPosition(function (pos) {
                     n = {
                         name: np.name,
@@ -68,15 +93,15 @@ var main_content = new Vue({
                         img: ''
                     }
                     main_content.posts.push(n);
-                    main_content.toggleLoading();
+                    main_content.incUploading();
 
                     // api call loading...
-                    main_content.toggleLoading();
+                    main_content.incUploading();
                     $.post(create_post_url,
                         {post: n},
                         function (data) {
                             posts[posts.length - 1].time = data.time;
-                            main_content.toggleLoading();
+                            main_content.incUploading();
                         });
                 });
 
@@ -106,8 +131,24 @@ var main_content = new Vue({
             toggleCreatePost: function () {
                 this.is_create_post = !this.is_create_post;
             },
-            toggleLoading: function () {
-                this.is_loading = !this.is_loading;
+            toggleComments: function () {
+                this.show_comments = !this.show_comments;
+            },
+            incUploading: function () {
+                if (this.uploading > 5)
+                    console.error('uploading multiple posts concurrently');
+                this.uploading++;
+            },
+            incLoadingComments: function () {
+                if (this.loadingComments > 2)
+                    console.error('loading multiple comments');
+                this.loadingComments++;
+            },
+            resetUploading: function () {
+                this.uploading = 0;
+            },
+            resetLoadingComments: function () {
+                this.loadingComments = 0;
             },
             resetAll: function () {
                 this.is_create_post = false;
