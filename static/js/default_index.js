@@ -6,7 +6,7 @@ function extend(a, b) {
     for (var i = 0; i < b.length; i++) {
         a.push(b[i]);
     }
-}
+};
 
 var main_content = new Vue({
         el: "#main_content",
@@ -24,6 +24,7 @@ var main_content = new Vue({
                     img: '',
                     comments: [],
                     id: 1,
+                    img: ''
                 },
                 {
                     name: 'asdf',
@@ -51,13 +52,12 @@ var main_content = new Vue({
         methods: {
             // get all posts TODO API
             getPosts: function () {
-                $.post(get_posts_url,
-                    {}, function (data) {
-                        main_content.posts = [];
-                        extend(main_content.posts, data.posts);
-                    }
-                );
-            },
+                $.getJSON(get_posts_url, function (data) {
+                    main_content.posts = [];
+                    extend(main_content.posts, data.posts);
+                });
+            }
+            ,
 
             // get all comments for this post TODO API
             getComments: function (idx) {
@@ -71,7 +71,8 @@ var main_content = new Vue({
                         main_content.incLoadingComments();
                     }
                 );
-            },
+            }
+            ,
 
             // create a new post TODO API
             //implement loading for geolocation and api call
@@ -91,7 +92,7 @@ var main_content = new Vue({
                         loc: {lat: pos.coords.latitude, lng: pos.coords.longitude},
                         time: '...',
                         img: ''
-                    }
+                    };
                     main_content.posts.push(n);
                     main_content.incUploading();
 
@@ -106,12 +107,14 @@ var main_content = new Vue({
                 });
 
                 this.resetAll();
-            },
+            }
+            ,
 
             // mark a post as complete. delete it. TODO API
             markPostComplete: function () {
 
-            },
+            }
+            ,
 
             // select post if new idx
             // otherwise deselect post
@@ -126,30 +129,37 @@ var main_content = new Vue({
                     var evt = jQuery.Event("deselected_loc");
                     $('#post_list').trigger(evt);
                 }
-            },
+            }
+            ,
 
             toggleCreatePost: function () {
                 this.is_create_post = !this.is_create_post;
-            },
+            }
+            ,
             toggleComments: function () {
                 this.show_comments = !this.show_comments;
-            },
+            }
+            ,
             incUploading: function () {
                 if (this.uploading > 5)
                     console.error('uploading multiple posts concurrently');
                 this.uploading++;
-            },
+            }
+            ,
             incLoadingComments: function () {
                 if (this.loadingComments > 2)
                     console.error('loading multiple comments');
                 this.loadingComments++;
-            },
+            }
+            ,
             resetUploading: function () {
                 this.uploading = 0;
-            },
+            }
+            ,
             resetLoadingComments: function () {
                 this.loadingComments = 0;
-            },
+            }
+            ,
             resetAll: function () {
                 this.is_create_post = false;
                 this.new_post.desc = '';
