@@ -25,6 +25,7 @@
     }
     #description{
         text-align: center;
+        margin-right: 1%;
         background-image: url("https://s-media-cache-ak0.pinimg.com/originals/ed/86/bf/ed86bfc3323f8e197b264305d6ebb80e.jpg");
         border-radius: 50px 50px 50px;
         font-size: 150%;
@@ -32,12 +33,13 @@
         text-shadow: 2px 2px 10px Black;
         width:50%;
         height: 145px;
+
     }
 
     #maplink{
         display: block;
         margin-left: auto;
-        margin-right: 0%;
+        margin-right: -1%;
         margin-top: -145px;
         background-image: url("https://s-media-cache-ak0.pinimg.com/originals/ed/86/bf/ed86bfc3323f8e197b264305d6ebb80e.jpg");
         text-align: center;
@@ -47,12 +49,13 @@
         text-shadow: 2px 2px 10px Black;
         width: 50%;
         height: 145px;
+
+        background-position: right -145px;
     }
     #aboutus{
-        display: block;
         text-align: center;
+        margin-right: 1%;
         background-image: url("https://s-media-cache-ak0.pinimg.com/originals/ed/86/bf/ed86bfc3323f8e197b264305d6ebb80e.jpg");
-        background-attachment: fixed;
         border-radius: 50px 50px 50px;
         font-size: 150%;
         color: white;
@@ -60,12 +63,13 @@
         width:50%;
         height: 145px;
 
-        line-height: 72px;
+        background-position: left -145px;
+
     }
     #profilelink{
         display: block;
         margin-left: auto;
-        margin-right: 0%;
+        margin-right: -1%;
         margin-top: -145px;
         background-image: url("https://s-media-cache-ak0.pinimg.com/originals/ed/86/bf/ed86bfc3323f8e197b264305d6ebb80e.jpg");
         text-align: center;
@@ -75,6 +79,8 @@
         text-shadow: 2px 2px 10px Black;
         width: 50%;
         height: 145px;
+
+        background-position: right 500px;
     }
     body {
       background-image: url("../static/images/background.jpg");
@@ -130,8 +136,8 @@
   <br>
     <div id="title"><a href="http://127.0.0.1:8000/hack/default/mainview">Click here for map</a></div>
 </div>
-
-<div id="description">
+<br>
+<div id="aboutus">
 
   <p>
     Some sort of description about the team. Maybe saying this was made for hackathon.
