@@ -17,6 +17,8 @@ var main_content = new Vue({
             {
                 name: 'name',
                 desc: 'desc',
+                loc: {lat: 36.9741, lng: -122.0308},
+                time: 'time',
                 img: '',
             }
         ],
@@ -47,9 +49,12 @@ var main_content = new Vue({
         // select post if new idx
         // otherwise deselect post
         selectPost: function (idx) {
-            if (this.sel_post != idx)
+            if (this.sel_post != idx) {
                 this.sel_post = idx;
-            else
+                var loc = this.posts[idx].loc;
+                var evt = jQuery.Event( "selected_location", {location:{lat:loc.lat, lng:loc.lng, zoom:17}} );
+                $('#post_list').trigger(evt);
+            } else
                 this.sel_post = -1;
         },
         toggleCreatePost: function () {
