@@ -14,26 +14,26 @@
         color:black;
     }
     #headerl{
-        vertical-align: bottom;
-
-        border-radius: 50px 124px 64px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        background-color:darkgrey;
+        text-align: center;
+        background-attachment: fixed;
+        background-position: center;
+        border-radius: 50px 50px 50px;
         font-size: 150%;
         color:black;
-        position: fixed;
-        top: 600;
-        left: 0;
-        width: 100%;
-        height: 80%;
+        width: 20%;
 
     }
     body {
-    background-image: url("https://s-media-cache-ak0.pinimg.com/originals/99/91/eb/9991ebe57eb7bc172143765e28a55b5d.jpg");
-    text-align: center;
-    top: 500;
-    background-color: rgba(255,255,255,0.6);
-    background-blend-mode:lighten;
-    color:black;
+      background-image: url("https://s-media-cache-ak0.pinimg.com/originals/99/91/eb/9991ebe57eb7bc172143765e28a55b5d.jpg");
+      background-color: rgba(255,255,255,0.7);
+      background-blend-mode:lighten;
+      color:black;
     }
+
 </style>
 
 <div id="header">
@@ -44,15 +44,18 @@
         </strong>
     </p>
 </div>
-
-<div id="body">
+<div id="headerl">
+  <header1 background-position center></header1>
   <form action = "action_page.php">
     <strong>
-    Username:<br>
+    Username<br>
     <input type = "text" username="input1"><br>
-    Password:<br>
+    Password<br>
     <input type = "text" password="input2"><br>
     <input type="submit" value="Log In">
     </strong>
   </form>
+</div>
+<div id="body">
+    <br>
 </div>
