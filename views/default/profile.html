@@ -22,16 +22,16 @@
     </div>
 
     <div id="bannerl">
-        <div id="title">Points: </div>
+        <div id="title">Points:</div>
     </div>
 
 </div>
 
-<div id="bannerD" class="">
-    <center>
-        <div id="title">Photo Reel</div>
-        <div id="picturelist">
-            
+<div id="bannerD" class="text-center">
+    <div id="title" style="position:absolute; width:250px">Photo Reel</div>
+    <div id="picturelist" class="text-center">
+
+        <div style="margin-top:45px">
             <div v-for="post in posts">
                 <div id="inner">
                     <img v-bind:src="post.img" alt="" height="127" width="127"/>
@@ -40,43 +40,43 @@
                 <br>
             </div>
         </div>
-        <script>
-            var get_posts_user_url = "{{=URL('api', 'get_posts_user')}}";
-
-            function extend(a, b) {
-                for (var i = 0; i < b.length; i++) {
-                    a.push(b[i]);
-                }
-            }
-            var picturelist = new Vue({
-                el: "#picturelist",
-                delimiters: ['${', '}'],
-                unsafeDelimiters: ['!{', '}'],
-                data: {
-                    posts: [],
-                },
-                methods: {
-                    getPosts: function () {
-                        $.post(get_posts_user_url, {
-                                    id: {{=auth.user_id}}
-                                },
-                                function (data) {
-                                    picturelist.posts = [];
-                                    extend(picturelist.posts, data.posts);
-                                    if (picturelist.posts == []) picturelist.posts = ["no pictures"]
-                                }
-                        );
-                    }
-                }
-            });
-            $(document).ready(function () {
-                picturelist.getPosts();
-            });
-
-        </script>
+    </div>
 </div>
+<script>
+    var get_posts_user_url = "{{=URL('api', 'get_posts_user')}}";
 
-</center>
+    function extend(a, b) {
+        for (var i = 0; i < b.length; i++) {
+            a.push(b[i]);
+        }
+    }
+    var picturelist = new Vue({
+        el: "#picturelist",
+        delimiters: ['${', '}'],
+        unsafeDelimiters: ['!{', '}'],
+        data: {
+            posts: [],
+        },
+        methods: {
+            getPosts: function () {
+                $.post(get_posts_user_url, {
+                            id: {{=auth.user_id}}
+                        },
+                        function (data) {
+                            picturelist.posts = [];
+                            extend(picturelist.posts, data.posts);
+                            if (picturelist.posts == []) picturelist.posts = ["no pictures"]
+                        }
+                );
+            }
+        }
+    });
+    $(document).ready(function () {
+        picturelist.getPosts();
+    });
+
+</script>
+
 </div>
 {{else:}}
 <meta http-equiv="refresh" content="0; URL='{{=URL('default', 'index')}}'"/>
