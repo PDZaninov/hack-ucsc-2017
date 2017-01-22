@@ -27,7 +27,7 @@ def profile():
 
 
     if db(db.post).isempty():
-        return dict(picture=db(db.post).select(db.post.image).last().image)
+        return dict(picture="../static/images/No-image-found.jpg")
     return (posts[0])
 
 def profilel():

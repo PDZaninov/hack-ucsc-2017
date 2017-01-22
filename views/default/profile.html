@@ -121,6 +121,7 @@
                                 function(data) {
                                     picturelist.posts = [];
                                     extend(picturelist.posts, data.posts);
+                                    if(picturelist.posts == []) picturelist.posts = ["no pictures"]
                                 }
                             );
                         }
