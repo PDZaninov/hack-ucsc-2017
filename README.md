@@ -1,2 +1,3 @@
 # hack-ucsc-2017
-repository for hackathon
+Check us out at
+https://worldplus.pythonanywhere.com/Worldplus/default/index
