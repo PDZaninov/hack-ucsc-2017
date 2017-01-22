@@ -23,6 +23,8 @@
 
     <div id="bannerl">
         <div id="title">Points:</div>
+        {{row = db(db.auth_user.id==auth.user.id).select().first()}}
+        {{=row.point}}
     </div>
 
 </div>
