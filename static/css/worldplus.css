@@ -6,7 +6,6 @@
     opacity: 0;
 }
 
-
 .quickfade-enter-active, .quickfade-leave-active {
     transition: all 0.2s;
 }
@@ -15,12 +14,24 @@
     opacity: 0;
 }
 
-.move-enter-active, .mode-leave-active{
+.move-enter-active, .mode-leave-active {
     transition: all 0.3s;
 }
 
 .move-move {
     transition: 0.3s;
+}
+
+.post-img-lg {
+    height:200px;
+    width:200px;
+    position:relative;
+    float:right;
+}
+
+.post-img {
+    width: 50px;
+    height: 50px;
 }
 
 .post-list {
@@ -41,8 +52,6 @@
 
 .map-overlay {
     position: absolute;
-    z-index: 5;
-    color: rgba(0, 0, 0, 0.5);
 }
 
 .post-hr {

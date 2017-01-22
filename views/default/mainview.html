@@ -2,6 +2,13 @@
 
 <script>
     var get_posts_url = "{{=URL('api', 'get_posts')}}}";
+    var create_post_url = "{{=URL('api', 'create_post')}}"
+    var create_comment_url = "{{=URL('api', 'create_comment')}}"
+
+
+    var get_comments_post_url = "{{=URL('api', 'get_comments_post')}}"
+    var get_comments_recv_user_url = "{{=URL('api', 'get_comments_recv_user')}}"
+    var get_comments_sent_user_url = "{{=URL('api', 'get_comments_sent_user')}}"
     var add_post_url;
     var del_post_url;
 </script>
@@ -20,10 +27,10 @@
 <div id="main_content" class="fullheight" style="display:none">
     <!--map div-->
     <div id="map" class="col-xs-0 col-sm-6 col-md-7">
-
     </div>
     <!-- for when we get geocaching
     <h3 class="col-sm-6 col-md-7 post-overlay text-center">Santa Cruz</h3> -->
+
 
     <!--posts div-->
     <div class="text-center col-xs-0 col-sm-6 col-md-5 fullheight">
@@ -66,10 +73,11 @@
                 </div>
             </transition>
 
-            <div v-for="(post, idx) in posts" id="post_list" v-if="!show_comments">
+            <div v-for="(post, idx) in posts" id="post_list" v-if="!show_comments && !is_create_post">
                 <div class="post-content text-left">
-                    <img v-bind="post.img" alt="post img"
+                    <img v-bind:src="post.img" alt="post img" class="post-img"
                          v-on:click="selectPost(idx)"/>
+                    <img v-if="sel_post == idx" v-bind:src="post.img" alt="post img" class="post-img-lg"/>
                     <div>name: ${post.name}</div>
                     <div>author: ${post.author}</div>
                     <transition name="fade">
@@ -78,7 +86,7 @@
                             <div class="post-desc">desc: ${post.desc}</div>
                             <div>location: {${post.loc.lat}, ${post.loc.lng}}</div>
                             <div>time: ${post.time}</div>
-                            <div>points: ${post.points}</div>
+                            <div>points: ${post.point}</div>
                             <transition name="fade">
                                 <div v-if="!show_comments" v-on:click="getComments">
                                     <button class="btn">show comments</button>
@@ -96,7 +104,7 @@
                 </div>
             </div>
 
-            <div v-if="show_comments">
+            <!--div v-if="show_comments">
                 <div>
                     <button class="btn" v-on:click="toggleComments">hide comments</button>
                 </div>
@@ -119,59 +127,61 @@
                         </div>
                     </div>
                 </transition>
-            </div>
+            </div-->
 
         </div>
     </div>
 
-    <script>
+
+</div>
+
+<script>
 
 
-        function initMap() {
-            var center = {lat: 36.9916520946924, lng: -122.061012402344};
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 12,
-                center: center
-            });
-            var marker = new google.maps.Marker({
-                position: center,
-                map: map
-            });
-
-            // set callback to auto-refocus center upon resizing window
-            window.onresize = function () {
-                google.maps.event.trigger(map, 'resize');
-                map.setCenter(center);
-            };
-
-            $('#post_list').on('selected_loc', function (evt) {
-                marker.setVisible(false);
-                center = evt.location;
-                map.setCenter(center);
-                if (map.zoom < 17)
-                    map.setZoom(17);
-                marker.setPosition(center);
-                marker.setVisible(true);
-            });
-            $('#post_list').on('deselected_loc', function () {
-                if (map.zoom > 15)
-                    map.setZoom(15);
-            });
-        }
-    </script>
-    <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5WLmkuj2OHkGa6p23cqLJfWQGSVwevl8&callback=initMap">
-    </script>
-    <script>
-        $(document).ready(function () {
-            $("#main_content").show();
-            main_content.getPosts();
+    function initMap() {
+        var center = {lat: 36.9916520946924, lng: -122.061012402344};
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 12,
+            center: center
         });
-    </script>
+        var marker = new google.maps.Marker({
+            position: center,
+            map: map
+        });
 
-    <script src="{{=URL('static','js/default_index.js')}}"></script>
+        // set callback to auto-refocus center upon resizing window
+        window.onresize = function () {
+            google.maps.event.trigger(map, 'resize');
+            map.setCenter(center);
+        };
 
-    <div id="body">
-        <br>
-    </div>
+        $('#main_content').on('selected_loc', function (evt) {
+            marker.setVisible(false);
+            center = evt.location;
+            map.setCenter(center);
+            if (map.zoom < 17)
+                map.setZoom(17);
+            marker.setPosition(center);
+            marker.setVisible(true);
+        });
+        $('#main_content').on('deselected_loc', function () {
+            if (map.zoom > 15)
+                map.setZoom(15);
+        });
+    }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5WLmkuj2OHkGa6p23cqLJfWQGSVwevl8&callback=initMap">
+</script>
+<script>
+    $(document).ready(function () {
+        $("#main_content").show();
+        main_content.getPosts();
+    });
+</script>
+
+<script src="{{=URL('static','js/default_index.js')}}"></script>
+
+<div id="body">
+    <br>
 </div>

@@ -91,7 +91,10 @@ var main_content = new Vue({
                         desc: np.desc,
                         loc: {lat: pos.coords.latitude, lng: pos.coords.longitude},
                         time: '...',
-                        img: ''
+                        img: '',
+                        point: 0,
+                        comments: [],
+                        author: ''
                     };
                     main_content.posts.push(n);
                     main_content.incUploading();
@@ -110,12 +113,6 @@ var main_content = new Vue({
             }
             ,
 
-            // mark a post as complete. delete it. TODO API
-            markPostComplete: function () {
-
-            }
-            ,
-
             // select post if new idx
             // otherwise deselect post
             selectPost: function (idx) {
@@ -123,11 +120,11 @@ var main_content = new Vue({
                     this.sel_post = idx;
                     var loc = this.posts[idx].loc;
                     var evt = jQuery.Event("selected_loc", {location: {lat: loc.lat, lng: loc.lng}});
-                    $('#post_list').trigger(evt);
+                    $('#main_content').trigger(evt);
                 } else {
                     this.sel_post = -1;
                     var evt = jQuery.Event("deselected_loc");
-                    $('#post_list').trigger(evt);
+                    $('#main_content').trigger(evt);
                 }
             }
             ,
@@ -138,8 +135,7 @@ var main_content = new Vue({
             ,
             toggleComments: function () {
                 this.show_comments = !this.show_comments;
-            }
-            ,
+            },
             incUploading: function () {
                 if (this.uploading > 5)
                     console.error('uploading multiple posts concurrently');
