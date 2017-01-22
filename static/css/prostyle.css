@@ -5,7 +5,7 @@ hr {
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
 }
 
-#title {
+#title{
     font-size: 250%;
 
 }
@@ -57,8 +57,8 @@ body {
     width: 50%;
     color: white;
     text-shadow: 2px 2px 10px Black;
-    overflow:hidden;
-    margin:auto;
+    overflow: hidden;
+    margin: auto;
 }
 
 .post-list {

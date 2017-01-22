@@ -11,7 +11,7 @@
 
 {{if logged_in:}}
 
-<div class="col-md-5">
+<div class="col-md-12">
     <div id="banner">
         <div id="title">Hello {{=T(auth.user.first_name if auth.user.first_name else '')}}</div>
         <p>
@@ -29,7 +29,7 @@
 <div id="vuediv">
     <div id="bannerD" class="col-xs-1">
         <div id="title" style="position:absolute; width:250px">Photo Reel</div>
-        <div id="picturelist" class="text-center">
+        <div class="text-center">
             <div style="margin-top:45px">
                 <div v-for="post in posts">
                     <div id="inner">
@@ -43,24 +43,35 @@
     </div>
 
     <div class="post-list col-xs-1">
-        <div id="title">Sent</div>
-        <div v-for="(comment, idx) in sent_comments">
-            <div class="post-content text-left">
-                <div>${comment.content}</div>
-                <div>${comment.sender} to ${comment.receiver} ${comment.time}</div>
+        <div id="title" style="position:absolute; width:250px">Sent</div>
+        <div style="margin-top:45px">
+            <div v-for="(comment, idx) in sent_comments">
+                <div class="post-content text-left">
+                    <div>${comment.content}</div>
+                    <div>${comment.sender} to ${comment.receiver} ${comment.time}</div>
+                </div>
             </div>
         </div>
     </div>
+
     <div class="post-list col-xs-1">
-        <div id="title">Received</div>
-        <div v-for="(comment, idx) in recv_comments">
-            <div class="post-content text-left">
-                <div>${comment.content}</div>
-                <div>${comment.sender} to ${comment.receiver} ${comment.time}</div>
+        <div id="title" style="position:absolute; width:250px">Received</div>
+        <div style="margin-top:45px">
+            <div v-for="(comment, idx) in recv_comments">
+                <div class="post-content text-left">
+                    <div>${comment.content}</div>
+                    <div>${comment.sender} to ${comment.receiver} ${comment.time}</div>
+                </div>
             </div>
         </div>
+    </div>
+
+    <div>
+        <input v-model="userid"/>
+        <button class="btn" v-on:click="getAll">get posts for id</button>
     </div>
 </div>
+
 
 <script>
     var get_posts_user_url = "{{=URL('api', 'get_posts_user')}}";
@@ -80,11 +91,17 @@
             posts: [],
             sent_comments: [],
             recv_comments: [],
+            userid: {{=auth.user_id}},
         },
         methods: {
+            getAll: function () {
+                this.getPosts();
+                this.getCommentsRecv();
+                this.getCommentsSent();
+            },
             getPosts: function () {
                 $.post(get_posts_user_url, {
-                            id: {{=auth.user_id}}
+                            id: vuediv.userid
                         },
                         function (data) {
                             vuediv.posts = [];
@@ -95,7 +112,7 @@
             },
             getCommentsSent: function () {
                 $.post(get_comments_sent_user_url, {
-                    id: {{=auth.user_id}}
+                    id: vuediv.userid
                 }, function (data) {
                     extend(vuediv.sent_comments, data.comments);
                     if (vuediv.sent_comments == []) vuediv.sent_comments = ['no sent comments']
@@ -103,7 +120,7 @@
             },
             getCommentsRecv: function () {
                 $.post(get_comments_recv_user_url, {
-                    id: {{=auth.user_id}}
+                    id: vuediv.userid
                 }, function (data) {
                     extend(vuediv.recv_comments, data.comments);
                     if (vuediv.recv_comments == []) vuediv.recv_comments = ['no received comments']
