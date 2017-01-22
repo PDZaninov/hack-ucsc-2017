@@ -30,25 +30,8 @@ def profile():
         return dict(picture="../static/images/No-image-found.jpg")
     return (posts[0])
 
-def profilel():
-    posts = []
-    for m in (db(db.post).select(db.post.image)):
-        posts.append((dict(picture=m.image)))
 
 
-    if db(db.post).isempty():
-        return dict(picture=db(db.post).select(db.post.image).last().image)
-    return posts[1]
-
-def profiler():
-    posts = []
-    for m in (db(db.post).select(db.post.image)):
-        posts.append((dict(picture=m.image)))
-
-
-    if db(db.post).isempty():
-        return dict(picture=db(db.post).select(db.post.image).last().image)
-    return posts[2]
 
 def user():
     """
