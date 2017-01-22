@@ -41,13 +41,15 @@ var main_content = new Vue({
             sel_post: -1,
             show_comments: false,
             is_create_post: false,
+            is_create_comment: false,
             uploading: 0,
             loading_comments: 0,
-            no_comments: false,
+            commenting: 0,
             new_post: {
                 name: '',
                 desc: '',
-            }
+            },
+            new_comment: '',
         },
         methods: {
             // get all posts TODO API
@@ -61,11 +63,11 @@ var main_content = new Vue({
 
             // get all comments for this post TODO API
             getComments: function (idx) {
-                this.toggleComments()
+                this.toggleComments();
                 this.resetLoadingComments();
                 this.incLoadingComments();
-                $.post(get_comments_url,
-                    {id: this.posts[idx].id},
+                $.post(get_comments_post_url,
+                    {id: main_content.posts[idx].id},
                     function (data) {
                         extend(main_content.posts[idx].comments, data.comments);
                         main_content.incLoadingComments();
@@ -85,6 +87,7 @@ var main_content = new Vue({
                 this.resetUploading();
                 // geolocation loading...
                 this.incUploading();
+                //try {
                 navigator.geolocation.getCurrentPosition(function (pos) {
                     n = {
                         name: np.name,
@@ -103,17 +106,49 @@ var main_content = new Vue({
 
                     // api call loading...
                     main_content.incUploading();
+                    //try {
                     $.post(create_post_url,
                         {post: n},
                         function (data) {
                             posts[posts.length - 1].time = data.time;
                             main_content.incUploading();
-                        });
+                        }
+                    );
+                    /*} catch (error) {
+                     console.error(error);
+                     main_content.resetUploading();
+                     }*/
                 });
-
+                /*}
+                 catch (error) {
+                 console.error(error);
+                 main_content.resetUploading();
+                 }*/
                 this.resetAll();
             }
             ,
+
+            createComment: function () {
+                var p = this.posts[this.sel_post];
+                this.resetCommenting();
+                this.incCommenting();
+                //try {
+                $.post(create_comment_url,
+                    {
+                        r_id: p.u_id,
+                        p_id: p.id,
+                        retort: main_content.new_comment
+                    }, function (data) {
+                        p.comments.unshift(data.comment)
+                        main_content.incCommenting();
+                    }
+                );
+                /*} catch (error) {
+                 console.error(error);
+                 main_content.resetCommenting();
+                 p.comments.slice(p.comments.indexOf(c), 1);
+                 }*/
+            },
 
             // select post if new idx
             // otherwise deselect post
@@ -131,8 +166,19 @@ var main_content = new Vue({
             }
             ,
 
+            incCommenting: function () {
+                if (this.commenting > 2)
+                    console.error('uploading multiple comments concurrently')
+                this.commenting++;
+            },
+            resetCommenting: function () {
+                this.commenting = 0;
+            },
             toggleCreatePost: function () {
                 this.is_create_post = !this.is_create_post;
+            },
+            toggleCreateComment: function () {
+                this.is_create_comment = !this.is_create_comment;
             }
             ,
             toggleComments: function () {

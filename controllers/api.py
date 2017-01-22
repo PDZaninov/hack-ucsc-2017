@@ -34,8 +34,13 @@ def get_posts_user():
 
 # insert comment into feedbacks table
 def create_comment():
-    db.feedbacks.insert(recv_id=request.vars.r_id, user_id=request.vars.u_id, post_id=request.vars.p_id,
+    id = db.feedbacks.insert(recv_id=request.vars.r_id, user_id=auth.user_id, post_id=request.vars.p_id,
                         retort=request.vars.content)
+    f = db.feedbacks[id]
+    user = db.auth_user[f.recv_id]
+    receiver = user.first_name + ' ' + user.last_name
+    sender = auth.user.first_name + ' ' + auth.user.last_name
+    return response.json(dict(comment=comment_response(f,sender,receiver)))
 
 
 # send all comments sent by a user
@@ -101,6 +106,7 @@ def comment_response(f, sender, receiver):
 def post_response(p, image, loc, author):
     return dict(
         id=p.id,
+        u_id=p.user_id,
         name=p.title,
         desc=p.description,
         img=image,
@@ -108,7 +114,7 @@ def post_response(p, image, loc, author):
         point=p.point,
         time=p.created_on,
         author=author,
-        comment=dict()
+        comments=[]
     )
 
 def create_post(post):
