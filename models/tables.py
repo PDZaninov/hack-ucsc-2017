@@ -5,13 +5,14 @@ db.define_table('post',
                 Field('user_id', 'reference auth_user', default=session.auth.user.id if session.auth else None),
                 Field('title', 'string'),
                 Field('description', 'string'),
-                Field('image', 'upload'),
+                Field('image', 'upload', uploadfield='image_file'),
+                Field('image_file', 'blob'),
                 Field('address', 'string'),
                 Field('lat', 'double'),
                 Field('lng', 'double'),
                 Field('point', 'integer'),
                 Field('created_on', 'datetime', default=datetime.datetime.utcnow())
-                )
+            )
 
 db.define_table('feedback',
                 Field('recv_id', 'reference auth_user'),

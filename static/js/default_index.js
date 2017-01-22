@@ -14,29 +14,28 @@ var main_content = new Vue({
         unsafeDelimiters: ['!{', '}'],
         data: {
             posts: [
-                {
-                    name: 'name',
-                    author: 'guy',
-                    desc: 'desc',
-                    loc: {lat: 36.9741, lng: -122.0308},
-                    time: 'time',
-                    point: 12,
-                    img: '',
-                    comments: [],
-                    id: 1,
-                    img: ''
-                },
-                {
-                    name: 'asdf',
-                    author: 'guy2',
-                    desc: 'desc',
-                    loc: {lat: 36.9585966, lng: -122.060937},
-                    time: 'time',
-                    point: 14,
-                    img: '',
-                    comments: [],
-                    id: 2,
-                }
+                /*{
+                 name: 'name',
+                 author: 'guy',
+                 desc: 'desc',
+                 loc: {lat: 36.9741, lng: -122.0308},
+                 time: 'time',
+                 point: 12,
+                 img: '',
+                 comments: [],
+                 id: 1,
+                 },
+                 {
+                 name: 'asdf',
+                 author: 'guy2',
+                 desc: 'desc',
+                 loc: {lat: 36.9585966, lng: -122.060937},
+                 time: 'time',
+                 point: 14,
+                 img: '',
+                 comments: [],
+                 id: 2,
+                 }*/
             ],
             sel_post: -1,
             show_comments: false,
@@ -48,7 +47,8 @@ var main_content = new Vue({
             new_post: {
                 name: '',
                 desc: '',
-                img: ''
+                img: '',
+                imgName: '',
             },
             new_comment: '',
         },
@@ -83,7 +83,10 @@ var main_content = new Vue({
             createPost: function () {
                 var n = this.new_post;
                 var np = {
-                    name: n.name, desc: n.desc
+                    name: n.name,
+                    desc: n.desc,
+                    img: n.img,
+                    imgName: n.imgName
                 };
                 this.resetUploading();
                 // geolocation loading...
@@ -95,11 +98,12 @@ var main_content = new Vue({
                         name: np.name,
                         desc: np.desc,
                         loc: {lat: pos.coords.latitude, lng: pos.coords.longitude},
-                        img: '',
+                        img: np.img,
                         point: 0,
                         comments: [],
                         author: '',
-                        created_on: ''
+                        created_on: '',
+                        imgName: np.imgName,
                     };
                     main_content.incUploading();
 
@@ -107,14 +111,17 @@ var main_content = new Vue({
                     main_content.incUploading();
                     //try {
                     $.post(create_post_url,
-                        {name: n.name,
-                        desc: n.desc,
-                        lat: n.loc['lat'],
-                        lng: n.loc['lng'],
-                        img: n.img,
-                        point: n.point,
-                        comment: n.comments,
-                        author: ''},
+                        {
+                            name: n.name,
+                            desc: n.desc,
+                            lat: n.loc['lat'],
+                            lng: n.loc['lng'],
+                            imgName: n.imgName,
+                            img: n.img,
+                            point: n.point,
+                            comment: n.comments,
+                            author: ''
+                        },
                         function (data) {
                             n.author = data.author;
                             n.created_on = data.created_on;
@@ -186,20 +193,41 @@ var main_content = new Vue({
                 this.is_create_post = !this.is_create_post;
                 if (this.is_create_post) {
                     setTimeout(function () {
-                        $('#post_image').on('change', function (event) {
-                            var f = event.target.files[0];
-                            main_content.new_post.imgName = f.name;
-                            console.log(fname);
-                            var r = new FileReader(f);
-                            r.onload = function (e) {
-                                var contents = e.target.result;
-                                var ct = r.result;
-                                main_content.new_post.img = r.result;
-                                $('#post_image').value = '';
+                        /*$('#post_image').on('change', function (event) {
+                         var f = event.target.files[0];
+                         main_content.new_post.imgName = f.name;
+                         var r = new FileReader;
+                         r.onload = function (e) {
+                         var contents = e.target.result;
+                         var ct = r.result;
+                         main_content.new_post.img = r.result;
+                         $('#post_image').value = '';
+                         }
+                         r.readAsDataUrl(f);
+                         });*/
+                        $("#post_image").change(function () {
+                            var fileObj = this,
+                                file;
+
+                            if (fileObj.files) {
+                                file = fileObj.files[0];
+                                main_content.new_post.imgName=file.name;
+                                var fr = new FileReader;
+                                fr.onloadend = changeimg;
+                                fr.readAsDataURL(file)
+                            } else {
+                                file = fileObj.value;
+                                changeimg(file);
                             }
-                            r.readAsText(f);
                         });
-                    }, 500);
+
+                        function changeimg(str) {
+                            if (typeof str === "object") {
+                                str = str.target.result; // file reader
+                            }
+                            main_content.new_post.img = str;
+                        }
+                    }, 500); //http://jsfiddle.net/fKQDL/
                 }
             },
             toggleCreateComment: function () {
