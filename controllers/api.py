@@ -3,30 +3,36 @@ import logging
 
 def get_posts():
     posts = []
-    rows = db().select(db.post.ALL, orderby=~db.post.created_on)
+    post_rows = db(db.post).select( orderby=~db.post.created_on)
 
-    for i, r in enumerate(rows):
-        image = URL('appadmin', 'download/db', args=r.image)
-        loc = dict(lat=r.lat, lng=r.lng)
-        uname = db(db.auth_user.id == r.user_id).select(db.auth_user.first_name, db.auth_user.last_name).first()
+    for i, p in enumerate(post_rows):
+        image = URL('appadmin', 'download/db', args=p.image)
+        loc = dict(lat=p.lat, lng=p.lng)
+        uname = db(db.auth_user.id == p.user_id).select(db.auth_user.first_name, db.auth_user.last_name).first()
         author = uname.first_name + " " + uname.last_name
 
-        post = dict(
-            id=r.id,
-            name=r.title,
-            desc=r.description,
-            img=image,
-            loc=loc,
-            point=r.point,
-            time=r.created_on,
-            author=author,
-            comment=dict()
-        )
+        post = post_response(p, image, loc, author)
         posts.append(post)
 
     return response.json(dict(posts=posts))
 
+# get posts of the requested user
+def get_posts_user():
+    posts = []
+    post_rows = db(db.post.user_id == request.vars.id).select(orderby=~db.post.created_on)
 
+    for i, p in enumerate(post_rows):
+        image = URL('appadmin', 'download/db', args=p.image)
+        loc = dict(lat=p.lat, lng=p.lng)
+        uname = db(db.auth_user.id == p.user_id).select(db.auth_user.first_name, db.auth_user.last_name).first()
+        author = uname.first_name + " " + uname.last_name
+
+        post = post_response(p, image, loc, author)
+        posts.append(post)
+
+    return response.json(dict(posts=posts))
+
+# insert comment into feedbacks table
 def create_comment():
     db.feedbacks.insert(recv_id=request.vars.r_id, user_id=request.vars.u_id, post_id=request.vars.p_id,
                         retort=request.vars.content)
@@ -82,7 +88,7 @@ def get_comments_post():
 
     return response.json(dict(comments=comments))
 
-
+# helper function for comment response
 def comment_response(f, sender, receiver):
     return dict(
         id=f.post_id,
@@ -91,6 +97,20 @@ def comment_response(f, sender, receiver):
         sender=sender,
         receiver=receiver
     )
+# helper function for post response
+def post_response(p, image, loc, author):
+    return dict(
+        id=p.id,
+        name=p.title,
+        desc=p.description,
+        img=image,
+        loc=loc,
+        point=p.point,
+        time=p.created_on,
+        author=author,
+        comment=dict()
+    )
+
 def create_post(post):
 
     db.posts.bulk_insert([{'title':post.name},
