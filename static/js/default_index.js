@@ -13,34 +13,12 @@ var main_content = new Vue({
         delimiters: ['${', '}'],
         unsafeDelimiters: ['!{', '}'],
         data: {
-            posts: [
-                /*{
-                 name: 'name',
-                 author: 'guy',
-                 desc: 'desc',
-                 loc: {lat: 36.9741, lng: -122.0308},
-                 time: 'time',
-                 point: 12,
-                 img: '',
-                 comments: [],
-                 id: 1,
-                 },
-                 {
-                 name: 'asdf',
-                 author: 'guy2',
-                 desc: 'desc',
-                 loc: {lat: 36.9585966, lng: -122.060937},
-                 time: 'time',
-                 point: 14,
-                 img: '',
-                 comments: [],
-                 id: 2,
-                 }*/
-            ],
+            posts: [],
             sel_post: -1,
             show_comments: false,
             is_create_post: false,
             is_create_comment: false,
+            is_uploading: false,
             uploading: 0,
             loading_comments: 0,
             commenting: 0,
@@ -67,14 +45,20 @@ var main_content = new Vue({
                 this.toggleComments();
                 this.resetLoadingComments();
                 this.incLoadingComments();
-                $.post(get_comments_post_url,
-                    {id: main_content.posts[idx].id},
-                    function (data) {
-                        main_content.posts[idx].comments = [];
-                        extend(main_content.posts[idx].comments, data.comments);
-                        main_content.incLoadingComments();
-                    }
-                );
+                try {
+                    $.post(get_comments_post_url,
+                        {id: main_content.posts[idx].id},
+                        function (data) {
+                            main_content.posts[idx].comments = [];
+                            extend(main_content.posts[idx].comments, data.comments);
+                            main_content.incLoadingComments();
+                        }
+                    );
+                }
+                catch (error) {
+                    console.error(error);
+                    main_content.resetLoadingComments();
+                }
             }
             ,
 
@@ -91,54 +75,54 @@ var main_content = new Vue({
                 this.resetUploading();
                 // geolocation loading...
                 this.incUploading();
-                //try {
-                navigator.geolocation.getCurrentPosition(function (pos) {
-                    n = {
-                        id: 0,
-                        name: np.name,
-                        desc: np.desc,
-                        loc: {lat: pos.coords.latitude, lng: pos.coords.longitude},
-                        img: np.img,
-                        point: 0,
-                        comments: [],
-                        author: '',
-                        created_on: '',
-                        imgName: np.imgName,
-                    };
-                    main_content.incUploading();
+                try {
+                    navigator.geolocation.getCurrentPosition(function (pos) {
+                        n = {
+                            id: 0,
+                            name: np.name,
+                            desc: np.desc,
+                            loc: {lat: pos.coords.latitude, lng: pos.coords.longitude},
+                            img: np.img,
+                            point: 0,
+                            comments: [],
+                            author: '',
+                            created_on: '',
+                            imgName: np.imgName,
+                        };
+                        main_content.incUploading();
 
-                    // api call loading...
-                    main_content.incUploading();
-                    //try {
-                    $.post(create_post_url,
-                        {
-                            name: n.name,
-                            desc: n.desc,
-                            lat: n.loc['lat'],
-                            lng: n.loc['lng'],
-                            imgName: n.imgName,
-                            img: n.img,
-                            point: n.point,
-                            comment: n.comments,
-                            author: ''
-                        },
-                        function (data) {
-                            n.author = data.author;
-                            n.created_on = data.created_on;
-                            n.id = data.id;
-                            main_content.posts.unshift(n)
+                        // api call loading...
+                        try {
+                            $.post(create_post_url,
+                                {
+                                    name: n.name,
+                                    desc: n.desc,
+                                    lat: n.loc['lat'],
+                                    lng: n.loc['lng'],
+                                    imgName: n.imgName,
+                                    img: n.img,
+                                    point: n.point,
+                                    comment: n.comments,
+                                    author: ''
+                                },
+                                function (data) {
+                                    n.author = data.author;
+                                    n.created_on = data.created_on;
+                                    n.id = data.id;
+                                    main_content.posts.unshift(n)
+                                    main_content.incUploading();
+                                }
+                            );
+                        } catch (error) {
+                            console.error(error);
+                            main_content.resetUploading();
                         }
-                    );
-                    /*} catch (error) {
-                     console.error(error);
-                     main_content.resetUploading();
-                     }*/
-                });
-                /*}
-                 catch (error) {
-                 console.error(error);
-                 main_content.resetUploading();
-                 }*/
+                    });
+                }
+                catch (error) {
+                    console.error(error);
+                    main_content.resetUploading();
+                }
                 this.resetAll();
             }
             ,
@@ -147,22 +131,21 @@ var main_content = new Vue({
                 var p = this.posts[this.sel_post];
                 this.resetCommenting();
                 this.incCommenting();
-                //try {
-                $.post(create_comment_url,
-                    {
-                        r_id: main_content.posts[main_content.sel_post].u_id,
-                        p_id: main_content.posts[main_content.sel_post].id,
-                        retort: main_content.new_comment
-                    }, function (data) {
-                        main_content.posts[main_content.sel_post].comments.unshift(data.comment)
-                        main_content.incCommenting();
-                    }
-                );
-                /*} catch (error) {
-                 console.error(error);
-                 main_content.resetCommenting();
-                 p.comments.slice(p.comments.indexOf(c), 1);
-                 }*/
+                try {
+                    $.post(create_comment_url,
+                        {
+                            r_id: main_content.posts[main_content.sel_post].u_id,
+                            p_id: main_content.posts[main_content.sel_post].id,
+                            retort: main_content.new_comment
+                        }, function (data) {
+                            main_content.posts[main_content.sel_post].comments.unshift(data.comment)
+                            main_content.incCommenting();
+                        }
+                    );
+                } catch (error) {
+                    console.error(error);
+                    main_content.resetCommenting();
+                }
             },
 
             // select post if new idx
@@ -193,25 +176,13 @@ var main_content = new Vue({
                 this.is_create_post = !this.is_create_post;
                 if (this.is_create_post) {
                     setTimeout(function () {
-                        /*$('#post_image').on('change', function (event) {
-                         var f = event.target.files[0];
-                         main_content.new_post.imgName = f.name;
-                         var r = new FileReader;
-                         r.onload = function (e) {
-                         var contents = e.target.result;
-                         var ct = r.result;
-                         main_content.new_post.img = r.result;
-                         $('#post_image').value = '';
-                         }
-                         r.readAsDataUrl(f);
-                         });*/
                         $("#post_image").change(function () {
                             var fileObj = this,
                                 file;
 
                             if (fileObj.files) {
                                 file = fileObj.files[0];
-                                main_content.new_post.imgName=file.name;
+                                main_content.new_post.imgName = file.name;
                                 var fr = new FileReader;
                                 fr.onloadend = changeimg;
                                 fr.readAsDataURL(file)
@@ -238,9 +209,15 @@ var main_content = new Vue({
                 this.show_comments = !this.show_comments;
             },
             incUploading: function () {
-                if (this.uploading > 5)
+                console.log(this.uploading);
+                if (this.uploading > 3) {
+                    this.resetUploading();
                     console.error('uploading multiple posts concurrently');
+                }
                 this.uploading++;
+                this.is_uploading = true;
+                if (this.uploading == 3)
+                    this.is_uploading = false;
             }
             ,
             incLoadingComments: function () {
@@ -250,6 +227,7 @@ var main_content = new Vue({
             }
             ,
             resetUploading: function () {
+                this.is_uploading = false;
                 this.uploading = 0;
             }
             ,
