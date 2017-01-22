@@ -11,6 +11,7 @@ button.post-list.btn:active {
 
 button.post-list.btn {
     height:5%;
+    overflow: hidden;
 }
 
 .fade-enter-active, .fade-leave-active{
