@@ -24,7 +24,7 @@ def mainview():
 
 def profile():
     if db(db.post).isempty():
-        return dict(dict(message=T('No such image exists.')))
+        return dict(picture=db(db.post).select(db.post.image))
     return dict(picture=db(db.post).select(db.post.image).last().image)
 
 
