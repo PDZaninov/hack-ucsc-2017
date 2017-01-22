@@ -71,7 +71,8 @@
 
 <div id="bannerD">
     <center>
-    <div id="title">Latest Post:{{=title}} {{=picture}}</div></center>
+    <div id="title">Latest Post: <img src="{{=URL('download',args=picture)}}" /></div>
+    </center>
 </div>
 {{else:}}
 <meta http-equiv="refresh" content="0; URL='http://127.0.0.1:8000/hack/default/index'" />
