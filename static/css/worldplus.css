@@ -36,7 +36,7 @@ button.post-list.btn {
 }
 
 .post-list {
-    overflow-y: scroll;
+    overflow-y: auto;
     height: 100%;
     border: 1px solid black;
     border-radius: 10px;
