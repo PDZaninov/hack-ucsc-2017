@@ -1,0 +1,200 @@
+{{extend 'layout.html'}}
+
+<script>
+    var get_posts_url = "{{=URL('api', 'get_posts')}}}";
+    var get_posts_user_url = "{{=URL('api', 'get_posts_user')}}";
+    var create_post_url = "{{=URL('api', 'create_post')}}";
+    var create_comment_url = "{{=URL('api', 'create_comment')}}";
+
+
+    var get_comments_post_url = "{{=URL('api', 'get_comments_post')}}"
+    var get_comments_recv_user_url = "{{=URL('api', 'get_comments_recv_user')}}"
+    var get_comments_sent_user_url = "{{=URL('api', 'get_comments_sent_user')}}"
+    var add_post_url;
+    var del_post_url;
+</script>
+
+<style>
+    body {
+        background-image: url("../static/images/background.jpg");
+        background-color: rgba(255, 255, 255, 0.7);
+        background-blend-mode: lighten;
+        color: black;
+    }
+</style>
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+<link rel="stylesheet" href="{{=URL('static','css/worldplus.css')}}"/>
+
+<div id="main_content" class="fullheight" style="display:none">
+    <!--map div-->
+    <div id="map" class="col-xs-0 col-sm-6 col-md-7">
+    </div>
+
+    <!--posts div-->
+    <div class="text-center col-xs-0 col-sm-6 col-md-5 fullheight">
+        <!-- toggle create post buttons -->
+        <div class="fullheight">
+            <div v-if="!show_comments">
+                <transition name="fade" mode="out-in">
+                    <div v-if="is_create_post" key="post-btn-1">
+                        <button class="btn col-xs-12 post-list" v-on:click="toggleCreatePost">
+                            Cancel Post
+                        </button>
+                    </div>
+                    <div v-else key="post-btn-2">
+                        <button class="btn col-xs-12 post-list" v-on:click="toggleCreatePost">
+                            Create Post
+                        </button>
+                    </div>
+                </transition>
+            </div>
+
+            <!-- show post form or post list -->
+            <div class="post-list">
+                <transition name="fade" mode="out-in">
+                    <div v-if="is_create_post" key="post-creation">
+                        <div class="post-content">
+                            <div><input type="text" v-model="new_post.name"/></div>
+                            <div class="form-group" id="post_image__row">
+                                <label class="control-label col-sm-3"
+                                       for="post_image"
+                                       id="post_image__label">Image</label>
+                                <div class="col-sm-9">
+                                    <input class="upload input-file" id="post_image" name="image"
+                                           type="file"/>
+                                </div>
+                                <div><textarea v-model="new_post.desc"></textarea></div>
+                                <div>
+                                    <button class="btn"
+                                            v-on:click="createPost">
+                                        Submit Post
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- -->
+                    <div v-if="!is_create_post" key="post-listing">
+                        <div v-for="(post, idx) in posts" id="post_list" v-if="!show_comments">
+                            <div class="post-content text-left">
+                                <img v-bind:src="post.img" alt="post img" class="post-img"
+                                     v-on:click="selectPost(idx)"/>
+                                <transition name="fade">
+                                    <img v-if="sel_post == idx" v-bind:src="post.img" alt="post img"
+                                         class="post-img-lg"/>
+                                </transition>
+                                <div>name: ${post.name}</div>
+                                <div>author: ${post.author}</div>
+                                <transition name="fade">
+                                    <div v-if="sel_post == idx">
+                                        <hr class="post-hr">
+                                        <div class="post-desc">desc: ${post.desc}</div>
+                                        <div>location: {${post.loc.lat}, ${post.loc.lng}}</div>
+                                        <div>time: ${post.time}</div>
+                                        <div>points: ${post.point}</div>
+                                        <div v-if="!show_comments" v-on:click="getComments(idx)">
+                                            <button class="btn">show comments</button>
+                                        </div>
+                                    </div>
+                                </transition>
+
+                                <div v-if="uploading">
+                                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </transition>
+                <div v-if="show_comments">
+                    <div class="post-content text-left">
+                        <img v-bind:src="posts[sel_post].img" alt="post img" class="post-img"/>
+                        <img v-bind:src="posts[sel_post].img" alt="post img" class="post-img-lg"/>
+                        <div>name: ${posts[sel_post].name}</div>
+                        <div>author: ${posts[sel_post].author}</div>
+                        <hr class="post-hr">
+                        <div class="post-desc">desc: ${posts[sel_post].desc}</div>
+                        <div>location: {${posts[sel_post].loc.lat}, ${posts[sel_post].loc.lng}}</div>
+                        <div>${posts[sel_post].time}</div>
+                        <div>points: ${posts[sel_post].point}</div>
+
+                        <transition name="fade" mode="out-in">
+                            <div v-if="is_create_comment">
+                                <button class="btn" v-on:click="toggleCreateComment">Cancel Comment</button>
+                                <div class="post-content">
+                                    <div><textarea v-model="new_comment"></textarea></div>
+                                    <button class="btn"
+                                            v-on:click="createComment">
+                                        Submit Comment
+                                    </button>
+                                </div>
+                            </div>
+                            <div v-if="!is_create_comment">
+                                <button class="btn" v-on:click="toggleComments">hide comments</button>
+                                <button class="btn" v-on:click="toggleCreateComment">Add Comment</button>
+                            </div>
+                        </transition>
+                    </div>
+
+                    <div v-for="(comment, idx) in posts[sel_post].comments">
+                        <div class="post-content text-left">
+                            <div>${comment.content}</div>
+                            <div>${comment.sender} ${comment.time}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function initMap() {
+        var center = {lat: 36.9916520946924, lng: -122.061012402344};
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 12,
+            center: center
+        });
+        var marker = new google.maps.Marker({
+            position: center,
+            map: map
+        });
+
+        // set callback to auto-refocus center upon resizing window
+        window.onresize = function () {
+            google.maps.event.trigger(map, 'resize');
+            map.setCenter(center);
+        };
+
+        $('#main_content').on('selected_loc', function (evt) {
+            marker.setVisible(false);
+            center = evt.location;
+            map.setCenter(center);
+            if (map.zoom < 17)
+                map.setZoom(17);
+            marker.setPosition(center);
+            marker.setVisible(true);
+        });
+        $('#main_content').on('deselected_loc', function () {
+            if (map.zoom > 15)
+                map.setZoom(15);
+        });
+    }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5WLmkuj2OHkGa6p23cqLJfWQGSVwevl8&callback=initMap">
+</script>
+<script>
+    $(document).ready(function () {
+        $("#main_content").show();
+        main_content.getPosts();
+    });
+</script>
+
+<script src="{{=URL('static','js/default_index.js')}}"></script>
+
+<div id="body">
+    <br>
+</div>

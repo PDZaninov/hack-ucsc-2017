@@ -1,0 +1,88 @@
+button.post-list.btn:hover {
+    border-color: black;
+    background-color:#fdfdfd;
+    color: #2e2f2a;
+}
+
+button.post-list.btn:active {
+    background-color: #fafafa;
+    color: #1e1f1a;
+}
+
+button.post-list.btn {
+    height:5%;
+}
+
+.fade-enter-active, .fade-leave-active{
+    transition: all 0.3s;
+}
+
+
+.fade-enter, .fade-leave-active {
+    opacity: 0;
+}
+
+.post-img-lg {
+    height: 200px;
+    width: 200px;
+    position: relative;
+    float: right;
+}
+
+.post-img {
+    width: 50px;
+    height: 50px;
+}
+
+.post-list {
+    overflow-y: scroll;
+    height: 100%;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.post-content {
+    border: 1px solid gray;
+    border-radius: 10px;
+    padding: 7px;
+    margin: 3px;
+    background-color: lightgreen;
+}
+
+.map-overlay {
+    position: absolute;
+}
+
+.post-hr {
+    margin: 0;
+    border-color: lightgray;
+}
+
+.post-desc {
+    margin: 7px;
+}
+
+div#map {
+    height: 100%;
+}
+
+.fullheight {
+    height: 100%;
+}
+
+html {
+    height: 100%
+}
+
+body {
+    height: 85%;
+}
+
+body div.main-container.container-fluid {
+    height: 100%;
+}
+
+body div.main-container div.col-md-12 {
+    height: 100%;
+}

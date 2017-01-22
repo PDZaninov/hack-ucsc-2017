@@ -1,52 +1,191 @@
-{{left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}}
 {{extend 'layout.html'}}
+{{logged_in = auth.user_id is not None}}
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
 
-{{block header}}
-    <header class="container-fluid background">
-      <div class="jumbotron text-center">
-        {{if response.title:}}
-        <h1>{{=response.title}}
-          <small>{{=response.subtitle or ''}}</small></h1>
-        {{pass}}
-      </div>
-    </header>
-{{end}}
+<style>
 
-{{if 'message' in globals():}}
-<h2>{{=message}}</h2>
-<p class="lead">{{=T('How did you get here?')}}</p>
-<ol>
-  <li>{{=T('You are successfully running web2py')}}</li>
-  <li>{{=XML(T('You visited the url %s', A(request.env.path_info,_href=request.env.path_info)))}}</li>
-  <li>{{=XML(T('Which called the function %s located in the file %s',
-    (A(request.function+'()',_href='#'),
-    A('web2py/applications/%(application)s/controllers/%(controller)s.py' % request,
-    _href=URL('admin','default','peek', args=(request.application,'controllers',request.controller+'.py'))))))}}</li>
-  <li>{{=XML(T('The output of the file is a dictionary that was rendered by the view %s',
-    A('web2py/applications/%(application)s/views/%(controller)s/index.html' % request,
-    _href=URL('admin','default','peek',args=(request.application,'views',request.controller,'index.html')))))}}</li>
-  <li>{{=T('You can modify this application and adapt it to your needs')}}</li>
-</ol>
-{{elif 'content' in globals():}}
-{{=content}}
+    #title{
+        font-size: 250%;
+    }
+
+    #banner{
+        text-align: center;
+        background-image: url("../static/images/minibanners.jpg");
+        border-radius: 50px 124px 64px;
+        font-size: 150%;
+        color: white;
+        text-shadow: 2px 2px 10px Black;
+        background-position: center -150px;
+    }
+    #login{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        color: white;
+        text-shadow: 2px 2px 10px Black;
+        width: 20%;
+    }
+    #description{
+        text-align: center;
+        margin-right: 1%;
+        background-image: url("../static/images/minibanners.jpg");
+        border-radius: 50px 50px 50px;
+        font-size: 150%;
+        color: white;
+        text-shadow: 2px 2px 10px Black;
+        width:50%;
+        height: 145px;
+
+    }
+
+    #maplink{
+        display: block;
+        margin-left: auto;
+        margin-right: -1%;
+        margin-top: -145px;
+        background-image: url("../static/images/minibanners.jpg");
+        text-align: center;
+        border-radius: 50px 50px 50px;
+        font-size: 150%;
+        color: white;
+        text-shadow: 2px 2px 10px Black;
+        width: 50%;
+        height: 145px;
+
+        background-position: right -145px;
+    }
+    #aboutus{
+        text-align: center;
+        vertical-align:middle
+        height: 50%;
+        margin-right: 1%;
+        background-image: url("../static/images/minibanners.jpg");
+        border-radius: 50px 50px 50px;
+        font-size: 150%;
+        color: white;
+        text-shadow: 2px 2px 10px Black;
+        width:50%;
+        height: 145px;
+
+        background-position: left -145px;
+    }
+    #profilelink{
+        display: block;
+        margin-left: auto;
+        margin-right: -1%;
+        margin-top: -145px;
+        background-image: url("../static/images/minibanners.jpg");
+        text-align: center;
+        border-radius: 50px 50px 50px;
+        font-size: 150%;
+        color: white;
+        text-shadow: 2px 2px 10px Black;
+        width: 50%;
+        height: 145px;
+        background-position: right 500px;
+    }
+    body {
+      background-image: url("../static/images/background.jpg");
+      background-color: rgba(255,255,255,0.7);
+      background-blend-mode:lighten;
+      color:black;
+    }
+    .btn-xlg {
+    padding: 18px 28px;
+    font-size: 20px;
+    line-height: normal;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    }
+
+    #openmes{
+        text-align: center;
+        margin-top: 75px;
+    }
+    #botr-link {
+		position: absolute;
+		top: 72%;
+		left: 51%;
+		width: 49%;
+		height:145px;
+		text-align:center;
+		background-color: transparent;
+		line-height: 140px;
+        border-radius: 50px 50px 50px;
+	}
+    #topr-link {
+		position: absolute;
+		top: 39%;
+		left: 51%;
+		width: 49%;
+		text-align:center;
+		height:147px;
+		background-color: transparent;
+        border-radius: 50px 50px 50px;
+		line-height: 140px;
+	}
+	#test{
+        font-size:250%;
+	}
+</style>
+
+<div id="banner">
+    <div id="title">This is World+</div>
+    <p>
+        <strong>
+            We help you improve your local environment with readily available information cultured by others in your area.
+        </strong>
+    </p>
+</div>
+{{if not logged_in:}}
+<div id="login">
+
+  <a class="btn btn-primary btn-xlg" href="{{=URL('default', 'user', args='login')}}" > Log In With Google
+
+  </a>
+
+</div>
 {{else:}}
-{{=BEAUTIFY(response._vars)}}
+        <div id="openmes">
+
+        </div>
 {{pass}}
 
-{{block right_sidebar}}
-<div class="panel panel-info">
-  <div class="panel-heading"><h3 class="panel-title"><a class="btn-block"
-      href="{{=URL('admin','default','index')}}">
-      <i class="glyphicon glyphicon-cog"></i>
-      {{=T("admin")}}
-    </a></h3></div>
-  <div class="panel-body">
-    {{=T("Don't know what to do?")}}
-  </div>
-  <ul class="list-group">
-    <li class="list-group-item">{{=A(T("Online examples"), _href=URL('examples','default','index'))}}</li>
-    <li class="list-group-item"><a href="http://web2py.com">web2py.com</a></li>
-    <li class="list-group-item"><a href="http://web2py.com/book">{{=T('Documentation')}}</a></li>
-  </ul>
+<div id="body">
+    <br>
 </div>
-{{end}}
+
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+
+<div id="description">
+  <div id="title">What is World+</div>
+      <p>
+        Connect with your community on World+. Help bring awareness to issues in the environment and be a part of the solution.
+      </p>
+</div>
+
+<div id="maplink">
+  <br>
+    <div id="title">
+        <a id="topr-link" href="mainview.html">Issues Near You</a>
+    </div>
+</div>
+<br>
+<div id="aboutus">
+    <div id="test">About Us</div>
+  <p>
+    This project was developed as part of Hack UCSC 2017.
+  </p>
+</div>
+
+<div id="profilelink">
+  <br>
+    <div id="title">
+        <a id="botr-link" href="profile.html">Your Profile</a>
+    </div>
+</div>
