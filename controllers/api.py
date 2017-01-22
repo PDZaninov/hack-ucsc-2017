@@ -91,3 +91,12 @@ def comment_response(f, sender, receiver):
         sender=sender,
         receiver=receiver
     )
+def create_post(post):
+
+    db.posts.bulk_insert([{'title':post.name},
+                                     {'description': post.desc},
+                                     {'image': post.img},
+                                     {'lat': post.loc.lat},
+                                     {'lng': post.loc.lng},
+                                     {'point': 0}])
+    return dict()

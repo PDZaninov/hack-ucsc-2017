@@ -6,7 +6,7 @@ function extend(a, b) {
     for (var i = 0; i < b.length; i++) {
         a.push(b[i]);
     }
-};
+}
 
 var main_content = new Vue({
         el: "#main_content",
@@ -94,7 +94,9 @@ var main_content = new Vue({
                         img: '',
                         point: 0,
                         comments: [],
-                        author: ''
+                        author: '',
+                        time: '',
+                        img: ''
                     };
                     main_content.posts.push(n);
                     main_content.incUploading();
