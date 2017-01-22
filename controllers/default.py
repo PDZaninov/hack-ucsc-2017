@@ -23,6 +23,8 @@ def mainview():
     return dict(message=T('Hi'))
 
 def profile():
+    if db(db.post).isempty():
+        return dict(picture=db(db.post).select(db.post.image))
     return dict(picture=db(db.post).select(db.post.image).last().image)
 
 
