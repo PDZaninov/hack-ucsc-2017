@@ -1,7 +1,6 @@
 import logging, base64
 
 
-
 def get_posts():
     posts = []
     post_rows = db(db.post).select(orderby=~db.post.created_on)
@@ -51,6 +50,8 @@ def get_comments_sent_user():
     comments = []
     feedbacks = db(db.feedback.user_id == request.vars.id).select(orderby=~db.feedback.created_on)
 
+    if len(feedbacks) < 1:
+        return response.json(dict(comments=[]))
     user = db.auth_user[feedbacks[0].user_id]
     sender = user.first_name + ' ' + user.last_name
     for i, f in enumerate(feedbacks):
@@ -68,6 +69,8 @@ def get_comments_recv_user():
     comments = []
     feedbacks = db(db.feedback.recv_id == request.vars.id).select(orderby=~db.feedback.created_on)
 
+    if len(feedbacks) < 1:
+        return response.json(dict(comments=[]))
     user = db.auth_user[feedbacks[0].recv_id]
     receiver = user.first_name + ' ' + user.last_name
     for i, f in enumerate(feedbacks):

@@ -26,36 +26,60 @@
     </div>
 
 </div>
-
-<div id="bannerD" class="text-center">
-    <div id="title" style="position:absolute; width:250px">Photo Reel</div>
-    <div id="picturelist" class="text-center">
-
-        <div style="margin-top:45px">
-            <div v-for="post in posts">
-                <div id="inner">
-                    <img v-bind:src="post.img" alt="" height="127" width="127"/>
+<div id="vuediv">
+    <div id="bannerD" class="col-xs-1">
+        <div id="title" style="position:absolute; width:250px">Photo Reel</div>
+        <div id="picturelist" class="text-center">
+            <div style="margin-top:45px">
+                <div v-for="post in posts">
+                    <div id="inner">
+                        <img v-bind:src="post.img" alt="" height="127" width="127"/>
+                        <br>
+                    </div>
                     <br>
                 </div>
-                <br>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-list col-xs-1">
+        <div id="title">Sent</div>
+        <div v-for="(comment, idx) in sent_comments">
+            <div class="post-content text-left">
+                <div>${comment.content}</div>
+                <div>${comment.sender} to ${comment.receiver} ${comment.time}</div>
+            </div>
+        </div>
+    </div>
+    <div class="post-list col-xs-1">
+        <div id="title">Received</div>
+        <div v-for="(comment, idx) in recv_comments">
+            <div class="post-content text-left">
+                <div>${comment.content}</div>
+                <div>${comment.sender} to ${comment.receiver} ${comment.time}</div>
             </div>
         </div>
     </div>
 </div>
+
 <script>
     var get_posts_user_url = "{{=URL('api', 'get_posts_user')}}";
+    var get_comments_recv_user_url = "{{=URL('api', 'get_comments_recv_user')}}"
+    var get_comments_sent_user_url = "{{=URL('api', 'get_comments_sent_user')}}"
 
     function extend(a, b) {
         for (var i = 0; i < b.length; i++) {
             a.push(b[i]);
         }
     }
-    var picturelist = new Vue({
-        el: "#picturelist",
+    var vuediv = new Vue({
+        el: "#vuediv",
         delimiters: ['${', '}'],
         unsafeDelimiters: ['!{', '}'],
         data: {
             posts: [],
+            sent_comments: [],
+            recv_comments: [],
         },
         methods: {
             getPosts: function () {
@@ -63,16 +87,34 @@
                             id: {{=auth.user_id}}
                         },
                         function (data) {
-                            picturelist.posts = [];
-                            extend(picturelist.posts, data.posts);
-                            if (picturelist.posts == []) picturelist.posts = ["no pictures"]
+                            vuediv.posts = [];
+                            extend(vuediv.posts, data.posts);
+                            if (vuediv.posts == []) vuediv.posts = ["no pictures"]
                         }
                 );
+            },
+            getCommentsSent: function () {
+                $.post(get_comments_sent_user_url, {
+                    id: {{=auth.user_id}}
+                }, function (data) {
+                    extend(vuediv.sent_comments, data.comments);
+                    if (vuediv.sent_comments == []) vuediv.sent_comments = ['no sent comments']
+                });
+            },
+            getCommentsRecv: function () {
+                $.post(get_comments_recv_user_url, {
+                    id: {{=auth.user_id}}
+                }, function (data) {
+                    extend(vuediv.recv_comments, data.comments);
+                    if (vuediv.recv_comments == []) vuediv.recv_comments = ['no received comments']
+                });
             }
         }
     });
     $(document).ready(function () {
-        picturelist.getPosts();
+        vuediv.getPosts();
+        vuediv.getCommentsSent();
+        vuediv.getCommentsRecv();
     });
 
 </script>
