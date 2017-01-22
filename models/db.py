@@ -88,7 +88,7 @@ service = Service()
 plugins = PluginManager()
 
 # extra fields
-auth.settings.extra_fields['auth_user'] = [Field('points', 'integer')]
+auth.settings.extra_fields['auth_user'] = [Field('points', 'integer', default='0')]
 
 # -------------------------------------------------------------------------
 # create all tables needed by auth if not custom tables
