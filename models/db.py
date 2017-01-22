@@ -87,6 +87,9 @@ auth = Auth(db, host_names=myconf.get('host.names'))
 service = Service()
 plugins = PluginManager()
 
+# extra fields
+auth.settings.extra_fields['auth_user'] = [Field('points', 'integer')]
+
 # -------------------------------------------------------------------------
 # create all tables needed by auth if not custom tables
 # -------------------------------------------------------------------------
