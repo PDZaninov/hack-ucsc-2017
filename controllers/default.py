@@ -23,7 +23,7 @@ def mainview():
     return dict(message=T('Hi'))
 
 def profile():
-    return dict(picture=db(db.post).select(db.post.image).first().image)
+    return dict(picture=db(db.post).select(db.post.image).last().image)
 
 
 def user():
