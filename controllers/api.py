@@ -117,12 +117,19 @@ def post_response(p, image, loc, author):
         comments=[]
     )
 
-def create_post(post):
+def create_post():
+    created_on=datetime.datetime.utcnow()
 
-    db.posts.bulk_insert([{'title':post.name},
-                                     {'description': post.desc},
-                                     {'image': post.img},
-                                     {'lat': post.loc.lat},
-                                     {'lng': post.loc.lng},
-                                     {'point': 0}])
-    return dict()
+    id = db.post.insert(user_id=auth.user.id,
+                           title=request.post_vars.name,
+                           description=request.vars.desc,
+                           image=request.vars.img,
+                           lat=request.vars.lat,
+                           lng=request.vars.lng,
+                           created_on=created_on,
+                           point=0
+                           )
+    author = auth.user.first_name + " " + auth.user.last_name
+
+
+    return response.json(dict(author=author, created_on=created_on, id=id))
