@@ -71,6 +71,13 @@
 <div id="bannerD">
     <center>
         <div id="title">Latest Post: <img src="{{=URL('download',args=picture)}}" alt = "No image found." height="255" width="255"/>
+            <script>
+            var get_posts = "{{=URL('api', 'get_posts_users', vars=dict(id=request.args(0)))}}"
+            var url = "{{=URL('api', 'get_posts_user')}}"
+            $.post(url, {id:{{=auth.user_id}}}, function(data) {
+            <img src="data" height="100" width="100">
+            }
+            </script>
         </div>
 
     </center>
