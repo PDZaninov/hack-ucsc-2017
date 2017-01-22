@@ -32,94 +32,97 @@
 
     <!--posts div-->
     <div class="text-center col-xs-0 col-sm-6 col-md-5 fullheight">
-        <div class="post-list">
-            <!-- toggle create post buttons -->
-            <transition name="fade" mode="out-in">
-                <div v-if="is_create_post" key="post-btn-1">
-                    <button class="btn" v-on:click="toggleCreatePost">
-                        Cancel Post
-                    </button>
-                </div>
-                <div v-else key="post-btn-2">
-                    <button class="btn" v-on:click="toggleCreatePost">
-                        Create Post
-                    </button>
-                </div>
-            </transition>
+        <!-- toggle create post buttons -->
+        <div class="fullheight">
+            <div v-if="!show_comments">
+                <transition name="fade" mode="out-in">
+                    <div v-if="is_create_post" key="post-btn-1">
+                        <button class="btn col-xs-12 post-list" v-on:click="toggleCreatePost">
+                            Cancel Post
+                        </button>
+                    </div>
+                    <div v-else key="post-btn-2">
+                        <button class="btn col-xs-12 post-list" v-on:click="toggleCreatePost">
+                            Create Post
+                        </button>
+                    </div>
+                </transition>
+            </div>
 
             <!-- show post form or post list -->
-            <transition name="quickfade">
-                <div v-if="is_create_post">
-                    <div class="post-content">
-                        <div><input type="text" v-model="new_post.name"/></div>
-                        <div class="form-group" id="post_image__row">
-                            <label class="control-label col-sm-3"
-                                   for="post_image"
-                                   id="post_image__label">Image</label>
-                            <div class="col-sm-9">
-                                <input class="upload input-file" id="post_image" name="image"
-                                       type="file"/>
-                            </div>
-                            <div><textarea v-model="new_post.desc"></textarea></div>
-                            <div>
-                                <button class="btn"
-                                        v-on:click="createPost">
-                                    Submit Post
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </transition>
-
-            <!-- -->
-            <div v-if="!is_create_post">
-                <div v-for="(post, idx) in posts" id="post_list" v-if="!show_comments">
-                    <div class="post-content text-left">
-                        <img v-bind:src="post.img" alt="post img" class="post-img"
-                             v-on:click="selectPost(idx)"/>
-                        <img v-if="sel_post == idx" v-bind:src="post.img" alt="post img" class="post-img-lg"/>
-                        <div>name: ${post.name}</div>
-                        <div>author: ${post.author}</div>
-                        <transition name="fade">
-                            <div v-if="sel_post == idx">
-                                <hr class="post-hr">
-                                <div class="post-desc">desc: ${post.desc}</div>
-                                <div>location: {${post.loc.lat}, ${post.loc.lng}}</div>
-                                <div>time: ${post.time}</div>
-                                <div>points: ${post.point}</div>
-                                <div v-if="!show_comments" v-on:click="getComments(idx)">
-                                    <button class="btn">show comments</button>
+            <div class="post-list">
+                <transition name="fade" mode="out-in">
+                    <div v-if="is_create_post" key="post-creation">
+                        <div class="post-content">
+                            <div><input type="text" v-model="new_post.name"/></div>
+                            <div class="form-group" id="post_image__row">
+                                <label class="control-label col-sm-3"
+                                       for="post_image"
+                                       id="post_image__label">Image</label>
+                                <div class="col-sm-9">
+                                    <input class="upload input-file" id="post_image" name="image"
+                                           type="file"/>
+                                </div>
+                                <div><textarea v-model="new_post.desc"></textarea></div>
+                                <div>
+                                    <button class="btn"
+                                            v-on:click="createPost">
+                                        Submit Post
+                                    </button>
                                 </div>
                             </div>
-                        </transition>
-
-                        <div v-if="uploading">
-                            <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-                            <span class="sr-only">Loading...</span>
                         </div>
                     </div>
-                </div>
 
-                <div v-else>
-                    <div>
-                        <button class="btn" v-on:click="toggleComments">hide comments</button>
+
+                    <!-- -->
+                    <div v-if="!is_create_post" key="post-listing">
+                        <div v-for="(post, idx) in posts" id="post_list" v-if="!show_comments">
+                            <div class="post-content text-left">
+                                <img v-bind:src="post.img" alt="post img" class="post-img"
+                                     v-on:click="selectPost(idx)"/>
+                                <transition name="fade">
+                                    <img v-if="sel_post == idx" v-bind:src="post.img" alt="post img"
+                                         class="post-img-lg"/>
+                                </transition>
+                                <div>name: ${post.name}</div>
+                                <div>author: ${post.author}</div>
+                                <transition name="fade">
+                                    <div v-if="sel_post == idx">
+                                        <hr class="post-hr">
+                                        <div class="post-desc">desc: ${post.desc}</div>
+                                        <div>location: {${post.loc.lat}, ${post.loc.lng}}</div>
+                                        <div>time: ${post.time}</div>
+                                        <div>points: ${post.point}</div>
+                                        <div v-if="!show_comments" v-on:click="getComments(idx)">
+                                            <button class="btn">show comments</button>
+                                        </div>
+                                    </div>
+                                </transition>
+
+                                <div v-if="uploading">
+                                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </transition>
+                <div v-if="show_comments">
                     <div class="post-content text-left">
-                        <img v-bind:src="post.img" alt="post img" class="post-img"
-                             v-on:click="selectPost(idx)"/>
-                        <img v-if="sel_post == idx" v-bind:src="post.img" alt="post img" class="post-img-lg"/>
-                        <div>name: ${post.name}</div>
-                        <div>author: ${post.author}</div>
+                        <img v-bind:src="posts[sel_post].img" alt="post img" class="post-img"/>
+                        <img v-bind:src="posts[sel_post].img" alt="post img" class="post-img-lg"/>
+                        <div>name: ${posts[sel_post].name}</div>
+                        <div>author: ${posts[sel_post].author}</div>
                         <hr class="post-hr">
-                        <div class="post-desc">desc: ${post.desc}</div>
-                        <div>location: {${post.loc.lat}, ${post.loc.lng}}</div>
-                        <div>time: ${post.time}</div>
-                        <div>points: ${post.point}</div>
+                        <div class="post-desc">desc: ${posts[sel_post].desc}</div>
+                        <div>location: {${posts[sel_post].loc.lat}, ${posts[sel_post].loc.lng}}</div>
+                        <div>${posts[sel_post].time}</div>
+                        <div>points: ${posts[sel_post].point}</div>
 
-                        <transition name="quickfade" mode="out-in">
+                        <transition name="fade" mode="out-in">
                             <div v-if="is_create_comment">
-                                <button class="btn" v-on:click="toggleCreateComment"></button>
+                                <button class="btn" v-on:click="toggleCreateComment">Cancel Comment</button>
                                 <div class="post-content">
                                     <div><textarea v-model="new_comment"></textarea></div>
                                     <button class="btn"
@@ -129,18 +132,19 @@
                                 </div>
                             </div>
                             <div v-if="!is_create_comment">
-                                <button class="btn" v-on:click="toggleCreateComment">Cancel Comment</button>
+                                <button class="btn" v-on:click="toggleComments">hide comments</button>
+                                <button class="btn" v-on:click="toggleCreateComment">Add Comment</button>
                             </div>
                         </transition>
                     </div>
 
                     <div v-for="(comment, idx) in posts[sel_post].comments">
-                        <div class="post-content">
-                            ${comment.content}
+                        <div class="post-content text-left">
+                            <div>${comment.content}</div>
+                            <div>${comment.sender} ${comment.time}</div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

@@ -34,9 +34,9 @@ def get_posts_user():
 
 # insert comment into feedbacks table
 def create_comment():
-    id = db.feedbacks.insert(recv_id=request.vars.r_id, user_id=auth.user_id, post_id=request.vars.p_id,
-                        retort=request.vars.content)
-    f = db.feedbacks[id]
+    id = db.feedback.insert(recv_id=request.vars.r_id, user_id=auth.user_id, post_id=request.vars.p_id,
+                        retort=request.vars.retort)
+    f = db.feedback[id]
     user = db.auth_user[f.recv_id]
     receiver = user.first_name + ' ' + user.last_name
     sender = auth.user.first_name + ' ' + auth.user.last_name

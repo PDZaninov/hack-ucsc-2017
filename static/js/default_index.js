@@ -69,6 +69,7 @@ var main_content = new Vue({
                 $.post(get_comments_post_url,
                     {id: main_content.posts[idx].id},
                     function (data) {
+                        main_content.posts[idx].comments = [];
                         extend(main_content.posts[idx].comments, data.comments);
                         main_content.incLoadingComments();
                     }
@@ -135,11 +136,11 @@ var main_content = new Vue({
                 //try {
                 $.post(create_comment_url,
                     {
-                        r_id: p.u_id,
-                        p_id: p.id,
+                        r_id: main_content.posts[main_content.sel_post].u_id,
+                        p_id: main_content.posts[main_content.sel_post].id,
                         retort: main_content.new_comment
                     }, function (data) {
-                        p.comments.unshift(data.comment)
+                        main_content.posts[main_content.sel_post].comments.unshift(data.comment)
                         main_content.incCommenting();
                     }
                 );

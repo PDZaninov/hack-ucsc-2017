@@ -1,32 +1,32 @@
-.fade-enter-active, .fade-leave-active {
+button.post-list.btn:hover {
+    border-color: black;
+    background-color:#fdfdfd;
+    color: #2e2f2a;
+}
+
+button.post-list.btn:active {
+    background-color: #fafafa;
+    color: #1e1f1a;
+}
+
+button.post-list.btn {
+    height:5%;
+}
+
+.fade-enter-active, .fade-leave-active{
     transition: all 0.3s;
 }
+
 
 .fade-enter, .fade-leave-active {
     opacity: 0;
 }
 
-.quickfade-enter-active, .quickfade-leave-active {
-    transition: all 0.2s;
-}
-
-.quickfade-enter, .quickfade-leave-active {
-    opacity: 0;
-}
-
-.move-enter-active, .mode-leave-active {
-    transition: all 0.3s;
-}
-
-.move-move {
-    transition: 0.3s;
-}
-
 .post-img-lg {
-    height:200px;
-    width:200px;
-    position:relative;
-    float:right;
+    height: 200px;
+    width: 200px;
+    position: relative;
+    float: right;
 }
 
 .post-img {
