@@ -177,6 +177,23 @@ var main_content = new Vue({
             },
             toggleCreatePost: function () {
                 this.is_create_post = !this.is_create_post;
+                if (this.is_create_post) {
+                    setTimeout(function () {
+                        $('#post_image').on('change', function (event) {
+                            var f = event.target.files[0];
+                            main_content.new_post.imgName = f.name;
+                            console.log(fname);
+                            var r = new FileReader(f);
+                            r.onload = function (e) {
+                                var contents = e.target.result;
+                                var ct = r.result;
+                                main_content.new_post.img = r.result;
+                                $('#post_image').value = '';
+                            }
+                            r.readAsText(f);
+                        });
+                    }, 500);
+                }
             },
             toggleCreateComment: function () {
                 this.is_create_comment = !this.is_create_comment;
