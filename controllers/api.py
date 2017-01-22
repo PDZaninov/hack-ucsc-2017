@@ -42,6 +42,10 @@ def create_comment():
     user = db.auth_user[f.recv_id]
     receiver = user.first_name + ' ' + user.last_name
     sender = auth.user.first_name + ' ' + auth.user.last_name
+
+    # add points by creating new comments
+    db(db.auth_user.id == auth.user.id).update(point=db.auth_user.point+1)
+
     return response.json(dict(comment=comment_response(f, sender, receiver)))
 
 
@@ -148,6 +152,9 @@ def create_post():
                         created_on=created_on,
                         point=0
                         )
+
+    # add 5 points by creating new post
+    db(db.auth_user.id == auth.user.id).update(point=db.auth_user.point+5)
 
     author = auth.user.first_name + " " + auth.user.last_name
 
