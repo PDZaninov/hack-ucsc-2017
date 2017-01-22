@@ -1,4 +1,5 @@
 {{extend 'layout.html'}}
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
 {{logged_in = auth.user_id is not None}}
 <style>
     hr{
@@ -36,14 +37,31 @@
     #bannerD{
         text-align: center;
         background-color:black;
-        margin-top: 0%;
-        margin-left:51%;
+        margin-top: -12%;
+        margin-left:60%;
         border-radius: 64px 124px 25px;
+        font-size: 100%;
+        width:25%;
+        color: white;
+        text-shadow: 2px 2px 10px Black;
+    }
+
+    #inner{
+        text-align: center;
+        background-color:white;
+        margin-top: 0%;
+        margin-left:0%;
+        border-radius: 25px 49px 25px;
         font-size: 100%;
         width:50%;
         color: white;
         text-shadow: 2px 2px 10px Black;
     }
+
+
+
+
+
 
 </style>
 
@@ -70,17 +88,52 @@
 
 <div id="bannerD">
     <center>
-        <div id="title">Latest Post: <img src="{{=URL('download',args=picture)}}" alt = "No image found." height="255" width="255"/>
-            <script>
-            var get_posts = "{{=URL('api', 'get_posts_users', vars=dict(id=request.args(0)))}}"
-            var url = "{{=URL('api', 'get_posts_user')}}"
-            $.post(url, {id:{{=auth.user_id}}}, function(data) {
-            <img src="data" height="100" width="100">
-            }
-            </script>
+        <div id="title">Photo Reel</div>
+        <div id="picturelist">
+            <div v-for="post in posts">
+                <div id="inner">
+                <img v-bind:src="post.img" alt="" height="127" width="127"/>
+                <br>
+                </div>
+                <br>
+            </div>
         </div>
+        <script>
+                var get_posts_user_url = "{{=URL('api', 'get_posts_user')}}";
 
-    </center>
+                function extend(a, b) {
+                    for (var i = 0; i < b.length; i++) {
+                        a.push(b[i]);
+                    }
+                }
+                var picturelist= new Vue({
+                    el: "#picturelist",
+                    delimiters: ['${', '}'],
+                    unsafeDelimiters: ['!{', '}'],
+                    data: {
+                        posts:[],
+                    },
+                    methods: {
+                        getPosts: function () {
+                            $.post(get_posts_user_url, {
+                                id: {{=auth.user_id}}
+                            },
+                                function(data) {
+                                    picturelist.posts = [];
+                                    extend(picturelist.posts, data.posts);
+                                }
+                            );
+                        }
+                    }
+                });
+                $(document).ready( function(){
+                    picturelist.getPosts();
+                });
+
+        </script>
+</div>
+
+</center>
 </div>
 {{else:}}
 <meta http-equiv="refresh" content="0; URL='http://127.0.0.1:8000/hack/default/index'"/>

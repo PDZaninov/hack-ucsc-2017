@@ -48,6 +48,7 @@ var main_content = new Vue({
             new_post: {
                 name: '',
                 desc: '',
+                img: ''
             },
             new_comment: '',
         },
@@ -84,35 +85,41 @@ var main_content = new Vue({
                 var np = {
                     name: n.name, desc: n.desc
                 };
-
                 this.resetUploading();
                 // geolocation loading...
                 this.incUploading();
                 //try {
                 navigator.geolocation.getCurrentPosition(function (pos) {
                     n = {
+                        id: 0,
                         name: np.name,
                         desc: np.desc,
                         loc: {lat: pos.coords.latitude, lng: pos.coords.longitude},
-                        time: '...',
                         img: '',
                         point: 0,
                         comments: [],
                         author: '',
-                        time: '',
-                        img: ''
+                        created_on: ''
                     };
-                    main_content.posts.push(n);
                     main_content.incUploading();
 
                     // api call loading...
                     main_content.incUploading();
                     //try {
                     $.post(create_post_url,
-                        {post: n},
+                        {name: n.name,
+                        desc: n.desc,
+                        lat: n.loc['lat'],
+                        lng: n.loc['lng'],
+                        img: n.img,
+                        point: n.point,
+                        comment: n.comments,
+                        author: ''},
                         function (data) {
-                            posts[posts.length - 1].time = data.time;
-                            main_content.incUploading();
+                            n.author = data.author;
+                            n.created_on = data.created_on;
+                            n.id = data.id;
+                            main_content.posts.unshift(n)
                         }
                     );
                     /*} catch (error) {
