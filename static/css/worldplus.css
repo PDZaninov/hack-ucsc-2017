@@ -39,7 +39,7 @@
     height: 100%;
     border: 1px solid black;
     border-radius: 10px;
-    background-color: floralwhite;
+    background-color: white;
 }
 
 .post-content {
@@ -47,7 +47,7 @@
     border-radius: 10px;
     padding: 7px;
     margin: 3px;
-    background-color: rgba(245, 245, 225, 0.45)
+    background-color: whitesmoke;
 }
 
 .map-overlay {
