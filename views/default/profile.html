@@ -37,8 +37,20 @@
     #bannerD{
         text-align: center;
         background-color:black;
+        margin-top: -5%;
+        margin-left:60%;
+        border-radius: 64px 124px 25px;
+        font-size: 100%;
+        width:25%;
+        color: white;
+        text-shadow: 2px 2px 10px Black;
+    }
+
+    #inner{
+        text-align: center;
+        background-color:white;
         margin-top: 0%;
-        margin-left:51%;
+        margin-left:0%;
         border-radius: 64px 124px 25px;
         font-size: 100%;
         width:50%;
@@ -76,9 +88,14 @@
 
 <div id="bannerD">
     <center>
+        <div id="title">Photo Reel</div>
         <div id="picturelist">
             <div v-for="post in posts">
-                <img v-bind:src="post.img" alt=""/>
+                <div id="inner">
+                <img v-bind:src="post.img" alt="" height="100" width="100"/>
+                <br>
+                </div>
+                <br>
             </div>
         </div>
         <script>
@@ -112,7 +129,7 @@
                 $(document).ready( function(){
                     picturelist.getPosts();
                 });
-                 
+
         </script>
 </div>
 
