@@ -29,7 +29,7 @@ response.google_analytics_id = None
 # this is the main application menu add/remove items as required
 # ----------------------------------------------------------------------------------------------------------------------
 response.menu = [
-    ((I(_class="fa fa-group"), T(' Events ')), False, URL('mainview')),
+    ((I(_class="fa fa-group"), T(' Issues ')), False, URL('mainview')),
     ((I(_class="fa fa-user-circle-o"), T(' Profile ')), False, URL('profile'))
 ]
 
