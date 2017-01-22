@@ -48,6 +48,7 @@ button.post-list.btn {
     padding: 7px;
     margin: 3px;
     background-color: lightgreen;
+
 }
 
 .map-overlay {
@@ -61,6 +62,7 @@ button.post-list.btn {
 
 .post-desc {
     margin: 7px;
+
 }
 
 div#map {
