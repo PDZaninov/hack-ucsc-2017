@@ -6,7 +6,7 @@ function extend(a, b) {
     for (var i = 0; i < b.length; i++) {
         a.push(b[i]);
     }
-};
+}
 
 var main_content = new Vue({
         el: "#main_content",
@@ -90,7 +90,7 @@ var main_content = new Vue({
                         name: np.name,
                         desc: np.desc,
                         loc: {lat: pos.coords.latitude, lng: pos.coords.longitude},
-                        time: '...',
+                        time: '',
                         img: ''
                     };
                     main_content.posts.push(n);

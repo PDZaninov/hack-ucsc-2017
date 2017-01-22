@@ -2,7 +2,7 @@
 
 <script>
     var get_posts_url = "{{=URL('api', 'get_posts')}}}";
-    var add_post_url = "{{=URL('api', 'add_post')}}";
+    var create_post_url = "{{=URL('api', 'create_post')}}";
     var del_post_url;
 </script>
 
@@ -53,17 +53,23 @@
                                 <button class="btn">
                                     Placeholder: Upload a Photo
                                 </button>
-                            </div>
-                            <div><textarea v-model="new_post.desc"></textarea></div>
-                            <div>
-                                <button class="btn"
-                                        v-on:click="createPost">
-                                    Submit Post
-                                </button>
+                                <div class="form-group" id="post_image__row"><label class="control-label col-sm-3"
+                                                                                    for="post_image"
+                                                                                    id="post_image__label">Image</label>
+                                    <div class="col-sm-9">
+                                        <input class="upload input-file" id="post_image" name="image"
+                                               type="file" />
+                                    </div>
+                                    <div><textarea v-model="new_post.desc"></textarea></div>
+                                    <div>
+                                        <button class="btn"
+                                                v-on:click="createPost">
+                                            Submit Post
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
             </transition>
 
             <div v-for="(post, idx) in posts" id="post_list" v-if="!show_comments">

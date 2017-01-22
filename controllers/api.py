@@ -27,3 +27,12 @@ def get_posts():
 
     return response.json(dict(posts=posts))
 
+def create_post(post):
+
+    db.posts.bulk_insert([{'title':post.name},
+                                     {'description': post.desc},
+                                     {'image': post.img},
+                                     {'lat': post.loc.lat},
+                                     {'lng': post.loc.lng},
+                                     {'point': 0}])
+    return dict()
